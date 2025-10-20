@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Buon Compleanno, Amore! 🎉</title>
+  <meta name="description" content="Auguri di compleanno e voucher d'amore fatti a mano, solo per te.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='0.9em' font-size='90'%3E%F0%9F%92%96%3C/text%3E%3C/svg%3E">
+
+  <style>
+    /* ---------- Reset leggero ---------- */
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    :root {
+      --bg: #0f1220;
+      --card: #171a2b;
+      --ink: #e8ecff;
+      --muted: #a9b0d9;
+      --accent: #ff7ac6;
+      --accent-2: #7ad6ff;
+      --success: #68d391;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 16px;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif;
+      color: var(--ink);
+      background: radial-gradient(1200px 800px at 20% 0%, #1b1f37 0%, var(--bg) 60%);
+      line-height: 1.6;
+    }
+
+    /* ---------- Hero ---------- */
+    .hero { position: relative; padding: 72px 16px 32px; overflow: hidden; }
+    .hero-inner { max-width: 960px; margin: 0 auto; text-align: center; }
+    h1 { font-size: clamp(32px, 5vw, 60px); margin: 0 0 8px; }
+    .subtitle { margin: 0 0 24px; color: var(--muted); }
+    .cta-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .hint { display: block; margin-top: 10px; color: var(--muted); font-size: 12px; }
+
+    #confetti { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; mix-blend-mode: screen; }
+
+    /* ---------- Buttons ---------- */
+    .btn {
+      border: 0;
+      border-radius: 999px;
+      padding: 12px 18px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .08s ease, box-shadow .2s ease, background .2s ease;
+      box-shadow: var(--shadow);
+    }
+    .btn.primary { background: linear-gradient(45deg, var(--accent), var(--accent-2)); color: #0b0f1a; }
+    .btn.ghost { background: transparent; color: var(--ink); outline: 1.5px solid rgba(255,255,255,.25); }
+    .btn:hover { transform: translateY(-1px) scale(1.01); }
+    .btn:active { transform: translateY(0) scale(.99); }
+    .btn.tiny { padding: 6px 10px; font-size: 12px; }
+
+    /* ---------- Sections ---------- */
+    main { max-width: 1000px; margin: 0 auto; padding: 24px 16px 56px; }
+    section { margin: 24px 0; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,.08); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); backdrop-filter: blur(8px); }
+    section h2 { margin-top: 0; }
+    .message p { font-size: 18px; }
+
+    /* ---------- Grid vouchers ---------- */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    .voucher {
+      background: linear-gradient(180deg, var(--card), #101429);
+      border: 1px dashed rgba(255,255,255,.2);
+      border-radius: 20px;
+      padding: 16px;
+      position: relative;
+      isolation: isolate;
+      min-height: 160px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .voucher::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 20px;
+      padding: 1px;
+      background: linear-gradient(45deg, rgba(255,122,198,.5), rgba(122,214,255,.4));
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+              mask-composite: exclude;
+      opacity: .6;
+      pointer-events: none;
+    }
+    .voucher-title { font-weight: 800; font-size: 18px; margin-bottom: 8px; }
+    .voucher-body { color: var(--muted); margin: 0 0 14px; }
+    .voucher-meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .tag { font-size: 12px; padding: 6px 10px; border-radius: 999px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.08); }
+
+    .voucher[data-redeemed="true"] {
+      opacity: .7;
+      filter: grayscale(.3);
+      border-style: solid;
+    }
+    .voucher[data-redeemed="true"] .voucher-meta .tag { background: rgba(104, 211, 145, .15); border-color: rgba(104, 211, 145, .35); }
+    .voucher[data-redeemed="true"] .redeemBtn { background: var(--success); color: #0a0f1a; }
+    .voucher .redeemBtn.redeemed { background: var(--success); color: #0a0f1a; }
+
+    /* ---------- Footer ---------- */
+    .footer { text-align: center; color: var(--muted); padding: 24px; }
+
+    /* ---------- Stampa ---------- */
+    @media print {
+      body { background: white; color: #111; }
+      .hero, .howto, .message { display: none; }
+      main { padding: 0; }
+      section { border: 0; box-shadow: none; padding: 0; }
+      .grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .voucher { background: white; border: 1px dashed #333; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .voucher::after { display: none; }
+      .voucher-meta .redeemBtn { display: none; }
+      .voucher-meta .tag { background: #eee; border-color: #ddd; color: #333; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <h1 id="headline">Buon Compleanno, <span id="name">Amore</span>! 🎂</h1>
+      <p class="subtitle">Un piccolo sito fatto apposta per te: auguri + voucher d'amore ❤️</p>
+      <div class="cta-row">
+        <button class="btn primary" id="openGift">Apri il regalo</button>
+        <button class="btn ghost" id="printVouchers">Stampa i voucher</button>
+      </div>
+      <small class="hint">Tutto fatto con amore, senza librerie esterne.</small>
+    </div>
+    <canvas id="confetti"></canvas>
+  </header>
+
+  <main>
+    <section class="message">
+      <h2>Per il mio sviluppatore preferito 💻</h2>
+      <p id="dedica">
+        <!-- <-- PERSONALIZZA QUI (testo dedica) -->
+        Oggi si festeggia il commit più importante: <strong>tu</strong>.
+        Grazie per il codice che scrivi e per l'amore che compili ogni giorno.
+        Prometto di non fare mai più <em>push</em> direttamente su main... forse. 😇
+      </p>
+    </section>
+
+    <section class="vouchers">
+      <div class="vouchers-header">
+        <h2>Voucher d'amore</h2>
+        <p>Falli scorrere, clicca per “riscattare”, oppure stampali. Sono validi fino a esaurimento coccole!</p>
+      </div>
+      <div id="voucherGrid" class="grid"></div>
+    </section>
+
+    <section class="howto">
+      <h2>Come personalizzare ✏️</h2>
+      <ol>
+        <li>Modifica la costante <code>CONFIG</code> qui sotto (nome, colori, voucher).</li>
+        <li>Ricarica la pagina: GitHub Pages servirà la nuova versione appena fai commit.</li>
+      </ol>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>© <span id="year"></span> Con amore ❤️</span>
+  </footer>
+
+  <template id="voucherTemplate">
+    <article class="voucher" data-redeemed="false">
+      <header class="voucher-title"></header>
+      <p class="voucher-body"></p>
+      <div class="voucher-meta">
+        <span class="tag">Amore</span>
+        <button class="btn tiny redeemBtn">Riscatta</button>
+      </div>
+    </article>
+  </template>
+
+  <script>
+    // =======================
+    // CONFIG (PERSONALIZZA)
+    // =======================
+    const CONFIG = {
+      name: "Amore", // <-- PERSONALIZZA QUI (nome del festeggiato)
+      headline: "Buon Compleanno, {name}! 🎂",
+      colors: { accent: "#ff7ac6", accent2: "#7ad6ff" }, // <-- colori tema
+      vouchers: [
+        // <-- PERSONALIZZA QUI (lista voucher)
+        { title: "Colazione a letto", text: "Un vassoio pieno di coccole, cornetto e caffè come piace a te." },
+        { title: "1 ora di massaggio", text: "Spalle, schiena, collo: rilassamento garantito." },
+        { title: "Serata film a tua scelta", text: "Popcorn inclusi, niente interruzioni. Anche trilogie epiche." },
+        { title: "Uscita senza pensieri", text: "Prenotazioni e itinerario li preparo io." },
+        { title: "Bugfix casalingo", text: "Sistema qualunque ‘bug’ di casa segnalato da te." },
+        { title: "Cena cucinata da me", text: "Menù completo, dall’antipasto al dolce." },
+        { title: "Passeggiata mano nella mano", text: "Al tramonto, al parco o dove vuoi." },
+        { title: "Giornata offline", text: "Niente schermi, solo noi. Modalità aereo attiva." },
+        { title: "Bacio a sorpresa", text: "Redeem immediato. Sempre valido. 😘" }
+      ]
+    };
+
+    // =======================
+    // SCRIPT (non serve toccare)
+    // =======================
+    const $ = (sel, ctx = document) => ctx.querySelector(sel);
+
+    function applyConfig() {
+      const nameEl = $("#name");
+      const headlineEl = $("#headline");
+      const yearEl = $("#year");
+
+      const h = CONFIG.headline.replace("{name}", CONFIG.name);
+      headlineEl.textContent = "";
+      headlineEl.insertAdjacentHTML("beforeend", h);
+      nameEl.textContent = CONFIG.name;
+      yearEl.textContent = new Date().getFullYear();
+
+      // Colors dinamici
+      const root = document.documentElement;
+      root.style.setProperty("--accent", CONFIG.colors.accent);
+      root.style.setProperty("--accent-2", CONFIG.colors.accent2);
+    }
+
+    function buildVouchers() {
+      const grid = $("#voucherGrid");
+      const tpl = $("#voucherTemplate");
+      grid.innerHTML = "";
+
+      CONFIG.vouchers.forEach((v, idx) => {
+        const node = tpl.content.cloneNode(true);
+        node.querySelector(".voucher-title").textContent = v.title;
+        node.querySelector(".voucher-body").textContent = v.text;
+        const article = node.querySelector(".voucher");
+        // Ripristina stato "riscattato" da localStorage
+        const redeemed = localStorage.getItem(`voucher_${idx}`) === "1";
+        article.dataset.redeemed = redeemed ? "true" : "false";
+        const btn = node.querySelector(".redeemBtn");
+        if (redeemed) btn.classList.add("redeemed");
+        btn.textContent = redeemed ? "Riscattato" : "Riscatta";
+        btn.addEventListener("click", () => {
+          const newVal = article.dataset.redeemed !== "true";
+          article.dataset.redeemed = newVal ? "true" : "false";
+          if (newVal) {
+            btn.classList.add("redeemed");
+            btn.textContent = "Riscattato";
+            localStorage.setItem(`voucher_${idx}`, "1");
+          } else {
+            btn.classList.remove("redeemed");
+            btn.textContent = "Riscatta";
+            localStorage.removeItem(`voucher_${idx}`);
+          }
+        });
+        grid.appendChild(node);
+      });
+    }
+
+    function setupPrint() {
+      $("#printVouchers").addEventListener("click", () => window.print());
+    }
+
+    // Confetti minimal
+    function confetti() {
+      const canvas = document.getElementById("confetti");
+      const ctx = canvas.getContext("2d");
+      let W, H, pieces;
+
+      function resize() {
+        W = canvas.width = canvas.offsetWidth;
+        H = canvas.height = canvas.offsetHeight;
+        pieces = Array.from({ length: 120 }, () => ({
+          x: Math.random() * W,
+          y: Math.random() * -H,
+          r: 4 + Math.random() * 6,
+          d: 1 + Math.random() * 2,
+          tilt: Math.random() * Math.PI,
+        }));
+      }
+      window.addEventListener("resize", resize);
+      resize();
+
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
+        for (const p of pieces) {
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.tilt);
+          ctx.fillStyle =
+            Math.random() > .5
+              ? getComputedStyle(document.documentElement).getPropertyValue("--accent")
+              : getComputedStyle(document.documentElement).getPropertyValue("--accent-2");
+          ctx.fillRect(-p.r/2, -p.r/2, p.r, p.r * .6);
+          ctx.restore();
+          p.y += p.d;
+          p.x += Math.sin(p.y / 25) * 0.8;
+          p.tilt += 0.02;
+          if (p.y > H + 20) { p.y = -10; p.x = Math.random() * W; }
+        }
+        requestAnimationFrame(draw);
+      }
+      draw();
+    }
+
+    function init() {
+      applyConfig();
+      buildVouchers();
+      setupPrint();
+      confetti();
+      document.getElementById("openGift").addEventListener("click", () => {
+        document.querySelector(".vouchers").scrollIntoView({ behavior: "smooth" });
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", init);
+  </script>
+</body>
+</html>
