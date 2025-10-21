@@ -8,19 +8,13 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='0.9em' font-size='90'%3E%F0%9F%92%96%3C/text%3E%3C/svg%3E">
 
   <style>
-    /* Reset */
+    /* Reset / theme */
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; }
     :root {
-      --bg: #0f1220;
-      --card: #171a2b;
-      --ink: #e8ecff;
-      --muted: #a9b0d9;
-      --accent: #ff7ac6;
-      --accent-2: #7ad6ff;
-      --success: #68d391;
-      --shadow: 0 10px 30px rgba(0,0,0,.35);
-      --radius: 16px;
+      --bg: #0f1220; --card: #171a2b; --ink: #e8ecff; --muted: #a9b0d9;
+      --accent: #ff7ac6; --accent-2: #7ad6ff; --success: #68d391;
+      --shadow: 0 10px 30px rgba(0,0,0,.35); --radius: 16px;
     }
     body {
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif;
@@ -39,15 +33,7 @@
     #confetti { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; mix-blend-mode: screen; }
 
     /* Buttons */
-    .btn {
-      border: 0;
-      border-radius: 999px;
-      padding: 12px 18px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: transform .08s ease, box-shadow .2s ease, background .2s ease;
-      box-shadow: var(--shadow);
-    }
+    .btn { border: 0; border-radius: 999px; padding: 12px 18px; font-weight: 700; cursor: pointer; transition: transform .08s ease, box-shadow .2s ease, background .2s ease; box-shadow: var(--shadow); }
     .btn.primary { background: linear-gradient(45deg, var(--accent), var(--accent-2)); color: #0b0f1a; }
     .btn.ghost { background: transparent; color: var(--ink); outline: 1.5px solid rgba(255,255,255,.25); }
     .btn:hover { transform: translateY(-1px) scale(1.01); }
@@ -61,46 +47,25 @@
     .message p { font-size: 18px; }
 
     /* Grid vouchers */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 16px;
-    }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
     .voucher {
       background: linear-gradient(180deg, var(--card), #101429);
       border: 1px dashed rgba(255,255,255,.2);
-      border-radius: 20px;
-      padding: 16px;
-      position: relative;
-      isolation: isolate;
-      min-height: 160px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+      border-radius: 20px; padding: 16px; position: relative; isolation: isolate;
+      min-height: 160px; display: flex; flex-direction: column; justify-content: space-between;
     }
     .voucher::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: 20px;
-      padding: 1px;
+      content: ''; position: absolute; inset: 0; border-radius: 20px; padding: 1px;
       background: linear-gradient(45deg, rgba(255,122,198,.5), rgba(122,214,255,.4));
       -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-      -webkit-mask-composite: xor;
-              mask-composite: exclude;
-      opacity: .6;
-      pointer-events: none;
+      -webkit-mask-composite: xor; mask-composite: exclude; opacity: .6; pointer-events: none;
     }
     .voucher-title { font-weight: 800; font-size: 18px; margin-bottom: 8px; }
     .voucher-body { color: var(--muted); margin: 0 0 14px; }
     .voucher-meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
     .tag { font-size: 12px; padding: 6px 10px; border-radius: 999px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.08); }
 
-    .voucher[data-redeemed="true"] {
-      opacity: .7;
-      filter: grayscale(.3);
-      border-style: solid;
-    }
+    .voucher[data-redeemed="true"] { opacity: .7; filter: grayscale(.3); border-style: solid; }
     .voucher[data-redeemed="true"] .voucher-meta .tag { background: rgba(104, 211, 145, .15); border-color: rgba(104, 211, 145, .35); }
     .voucher[data-redeemed="true"] .redeemBtn { background: var(--success); color: #0a0f1a; }
     .voucher .redeemBtn.redeemed { background: var(--success); color: #0a0f1a; }
@@ -158,14 +123,14 @@
         <h2>Voucher d'amore</h2>
         <p>Falli scorrere, clicca per “riscattare”, oppure stampali. Sono validi fino a esaurimento coccole!</p>
       </div>
-      <div id="voucherGrid" class="grid"></div>
+      <div id="voucherGrid" class="grid" aria-live="polite"></div>
     </section>
 
     <section class="howto">
       <h2>Come personalizzare ✏️</h2>
       <ol>
         <li>Modifica la costante <code>CONFIG</code> qui sotto (nome, colori, voucher).</li>
-        <li>Ricarica la pagina: GitHub Pages servirà la nuova versione appena fai commit.</li>
+        <li>Ricarica la pagina dopo il commit su GitHub Pages.</li>
       </ol>
     </section>
   </main>
@@ -173,17 +138,6 @@
   <footer class="footer">
     <span>© <span id="year"></span> Con amore ❤️</span>
   </footer>
-
-  <template id="voucherTemplate">
-    <article class="voucher" data-redeemed="false">
-      <header class="voucher-title"></header>
-      <p class="voucher-body"></p>
-      <div class="voucher-meta">
-        <span class="tag">Amore</span>
-        <button class="btn tiny redeemBtn">Riscatta</button>
-      </div>
-    </article>
-  </template>
 
   <script>
     // Config
@@ -207,57 +161,49 @@
     // Utils
     const $ = (sel, ctx = document) => ctx.querySelector(sel);
 
-    // Theme + headline
     function applyConfig() {
-      const headlineEl = $("#headline");
-      const yearEl = $("#year");
       const h = CONFIG.headline.replace("{name}", CONFIG.name);
-      headlineEl.innerHTML = h;
+      $("#headline").innerHTML = h;
       $("#name").textContent = CONFIG.name;
-      yearEl.textContent = new Date().getFullYear();
+      $("#year").textContent = new Date().getFullYear();
       const root = document.documentElement;
       root.style.setProperty("--accent", CONFIG.colors.accent);
       root.style.setProperty("--accent-2", CONFIG.colors.accent2);
     }
 
-    // Build vouchers
+    // Build vouchers (no <template>, robusto ovunque)
     function buildVouchers() {
       const grid = $("#voucherGrid");
-      const tpl = $("#voucherTemplate");
-      grid.innerHTML = "";
-      CONFIG.vouchers.forEach((v, idx) => {
-        const node = tpl.content.cloneNode(true);
-        node.querySelector(".voucher-title").textContent = v.title;
-        node.querySelector(".voucher-body").textContent = v.text;
-        const article = node.querySelector(".voucher");
-        const redeemed = localStorage.getItem(`voucher_${idx}`) === "1";
-        article.dataset.redeemed = redeemed ? "true" : "false";
-        const btn = node.querySelector(".redeemBtn");
-        if (redeemed) btn.classList.add("redeemed");
-        btn.textContent = redeemed ? "Riscattato" : "Riscatta";
+      const items = CONFIG.vouchers.map((v, idx) => `
+        <article class="voucher" data-redeemed="${localStorage.getItem('voucher_${idx}') === '1'}">
+          <header class="voucher-title">${v.title}</header>
+          <p class="voucher-body">${v.text}</p>
+          <div class="voucher-meta">
+            <span class="tag">Amore</span>
+            <button class="btn tiny redeemBtn">${localStorage.getItem('voucher_${idx}') === '1' ? 'Riscattato' : 'Riscatta'}</button>
+          </div>
+        </article>
+      `).join("");
+      grid.innerHTML = items;
+
+      // Bind redeem
+      grid.querySelectorAll(".voucher").forEach((card, idx) => {
+        const btn = card.querySelector(".redeemBtn");
         btn.addEventListener("click", () => {
-          const on = article.dataset.redeemed !== "true";
-          article.dataset.redeemed = on ? "true" : "false";
-          if (on) {
-            btn.classList.add("redeemed");
-            btn.textContent = "Riscattato";
-            localStorage.setItem(`voucher_${idx}`, "1");
-          } else {
-            btn.classList.remove("redeemed");
-            btn.textContent = "Riscatta";
-            localStorage.removeItem(`voucher_${idx}`);
-          }
+          const redeemed = card.dataset.redeemed !== "true";
+          card.dataset.redeemed = redeemed ? "true" : "false";
+          btn.textContent = redeemed ? "Riscattato" : "Riscatta";
+          if (redeemed) localStorage.setItem(`voucher_${idx}`, "1");
+          else localStorage.removeItem(`voucher_${idx}`);
         });
-        grid.appendChild(node);
       });
     }
 
-    // Print
     function setupPrint() {
       $("#printVouchers").addEventListener("click", () => window.print());
     }
 
-    // Confetti (light)
+    // Confetti light
     function confetti() {
       const canvas = document.getElementById("confetti");
       const ctx = canvas.getContext("2d");
@@ -288,24 +234,22 @@
       })();
     }
 
-    // App
     function init() {
       applyConfig();
       setupPrint();
       confetti();
 
-      let built = false;
       const btn = document.getElementById("openGift");
-      const vouchers = document.getElementById("vouchers");
+      const vouchersSection = document.getElementById("vouchers");
+      let built = false;
 
       btn.addEventListener("click", () => {
         if (!built) { buildVouchers(); built = true; }
-        vouchers.hidden = false;
-        // trigger CSS transition
-        void vouchers.offsetHeight;
-        vouchers.classList.add("reveal");
+        vouchersSection.hidden = false;
+        void vouchersSection.offsetHeight; // trigger transition
+        vouchersSection.classList.add("reveal");
         btn.setAttribute("aria-expanded", "true");
-        vouchers.scrollIntoView({ behavior: "smooth" });
+        vouchersSection.scrollIntoView({ behavior: "smooth" });
       });
     }
 
