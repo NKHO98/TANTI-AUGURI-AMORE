@@ -3,281 +3,256 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title> TANTI AUGURI AMORE MIO 🎉</title>
-  <meta name="description" content="A special gift just for you.">
+  <title>TANTI AUGURI AMORE MIO ❤️</title>
+  <meta name="description" content="A gift just for you. Love vouchers." />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='0.9em' font-size='90'%3E%F0%9F%92%96%3C/text%3E%3C/svg%3E">
+  <!-- Dancing Script per il sottotitolo -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
 
   <style>
-    /* Reset / tema */
+    /* ====== Tema minimal richiesto ====== */
+    :root{
+      --bg: #FFF9D6;            /* giallo pastello molto chiaro */
+      --ink: #C21807;           /* rosso ciliegia */
+      --card: #FFF3B0;          /* giallo pastello un filo più saturo per i riquadri */
+      --accent: #C21807;        /* stesso rosso per coerenza */
+      --accent-2: #E43D3D;      /* rosso più chiaro per dettagli */
+      --radius: 16px;
+      --shadow: 0 8px 24px rgba(0,0,0,.08);
+    }
+
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; }
-    :root {
-      --bg: #0f1220; --card: #171a2b; --ink: #e8ecff; --muted: #a9b0d9;
-      --accent: #ff7ac6; --accent-2: #7ad6ff; --success: #68d391;
-      --shadow: 0 10px 30px rgba(0,0,0,.35); --radius: 16px;
-    }
     body {
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif;
       color: var(--ink);
-      background: radial-gradient(1200px 800px at 20% 0%, #1b1f37 0%, var(--bg) 60%);
+      background: var(--bg);
       line-height: 1.6;
     }
 
-    /* Hero */
-    .hero { position: relative; padding: 72px 16px 32px; overflow: hidden; }
+    /* ====== Hero ====== */
+    .hero { position: relative; padding: 72px 16px 40px; }
     .hero-inner { max-width: 960px; margin: 0 auto; text-align: center; }
-    h1 { font-size: clamp(32px, 5vw, 60px); margin: 0 0 8px; }
-    .subtitle { margin: 0 0 24px; color: var(--muted); }
-    .cta-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-    .hint { display: block; margin-top: 10px; color: var(--muted); font-size: 12px; }
+    h1 {
+      margin: 0 0 6px;
+      font-size: clamp(32px, 5vw, 56px);
+      letter-spacing: 0.5px;
+    }
+    .subtitle {
+      margin: 0 0 28px;
+      font-family: "Dancing Script", cursive;
+      font-size: clamp(22px, 3.2vw, 34px);
+      font-weight: 700;
+    }
 
-    #confetti { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; mix-blend-mode: screen; }
+    /* canvas confetti (opzionale ma attivo) */
+    #confetti { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
 
-    /* Bottoni */
-    .btn { border: 0; border-radius: 999px; padding: 12px 18px; font-weight: 700; cursor: pointer; transition: transform .08s ease, box-shadow .2s ease, background .2s ease; box-shadow: var(--shadow); }
-    .btn.primary { background: linear-gradient(45deg, var(--accent), var(--accent-2)); color: #0b0f1a; }
-    .btn.ghost { background: transparent; color: var(--ink); outline: 1.5px solid rgba(255,255,255,.25); }
-    .btn:hover { transform: translateY(-1px) scale(1.01); }
-    .btn:active { transform: translateY(0) scale(.99); }
-    .btn.tiny { padding: 6px 10px; font-size: 12px; }
+    /* ====== CTA: testo + bottone pacchetto regalo ====== */
+    .cta { display: grid; justify-items: center; gap: 10px; }
+    .cta small { font-size: 12px; opacity: .9; }
 
-    /* Sezioni */
+    /* Bottone a forma di pacchetto regalo */
+    .gift-btn {
+      position: relative;
+      width: 120px;
+      height: 120px;
+      border: 0;
+      cursor: pointer;
+      border-radius: 18px;
+      background: var(--accent);
+      box-shadow: var(--shadow);
+      transition: transform .08s ease;
+      display: grid;
+      place-items: center;
+    }
+    .gift-btn:active { transform: translateY(1px) scale(.99); }
+
+    /* Nastro verticale e orizzontale */
+    .gift-btn::before, .gift-btn::after {
+      content: "";
+      position: absolute;
+      background: var(--accent-2);
+      left: 50%; top: 0; transform: translateX(-50%);
+      border-radius: 4px;
+    }
+    .gift-btn::before { /* nastro verticale */
+      width: 16px; height: 100%;
+    }
+    .gift-btn::after { /* nastro orizzontale */
+      width: 100%; height: 16px; top: 50%; left: 0; transform: translateY(-50%);
+    }
+
+    /* Fiocco */
+    .bow, .bow::before {
+      content: "";
+      position: absolute;
+      top: 22px; left: 50%;
+      width: 26px; height: 18px;
+      background: var(--accent-2);
+      border-radius: 18px 18px 2px 18px;
+      transform: translateX(-34px) rotate(-20deg);
+      box-shadow: var(--shadow);
+    }
+    .bow::before{
+      left: auto; right: -44px;
+      border-radius: 18px 18px 18px 2px;
+      transform: rotate(40deg);
+    }
+
+    /* ====== Sezioni ====== */
     main { max-width: 1000px; margin: 0 auto; padding: 24px 16px 56px; }
-    section { margin: 24px 0; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,.08); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); backdrop-filter: blur(8px); }
-    section h2 { margin-top: 0; }
-    .message p { font-size: 18px; }
+    section { margin: 24px 0; background: rgba(255,255,255,.35); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); }
+    section h2 { margin: 0 0 6px; }
 
-    /* Griglia voucher */
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+    /* ====== Vouchers ====== */
+    .vouchers[hidden] { display: none; }
+    .vouchers { opacity: 0; transform: translateY(10px); transition: opacity .28s ease, transform .28s ease; }
+    .vouchers.reveal { opacity: 1; transform: translateY(0); }
+
+    .vouchers-header p { margin: 6px 0 16px; font-size: 14px; opacity: .9; }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
     .voucher {
-      background: linear-gradient(180deg, var(--card), #101429);
-      border: 1px dashed rgba(255,255,255,.2);
-      border-radius: 20px; padding: 16px; position: relative; isolation: isolate;
-      min-height: 160px; display: flex; flex-direction: column; justify-content: space-between;
+      background: var(--card);
+      border: 1px dashed rgba(194, 24, 7, .55); /* tono rosso */
+      border-radius: 16px;
+      padding: 14px;
+      min-height: 150px;
+      display: flex; flex-direction: column; justify-content: space-between;
     }
-    .voucher::after {
-      content: ''; position: absolute; inset: 0; border-radius: 20px; padding: 1px;
-      background: linear-gradient(45deg, rgba(255,122,198,.5), rgba(122,214,255,.4));
-      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-      -webkit-mask-composite: xor; mask-composite: exclude; opacity: .6; pointer-events: none;
-    }
-    .voucher-title { font-weight: 800; font-size: 18px; margin-bottom: 8px; }
-    .voucher-body { color: var(--muted); margin: 0 0 14px; }
+    .voucher-title { font-weight: 800; margin-bottom: 6px; }
+    .voucher-body { margin: 0 0 12px; }
     .voucher-meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-    .tag { font-size: 12px; padding: 6px 10px; border-radius: 999px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.08); }
+    .tag { font-size: 12px; padding: 6px 10px; border-radius: 999px; background: rgba(194,24,7,.06); border: 1px solid rgba(194,24,7,.25); }
 
-    .voucher[data-redeemed="true"] { opacity: .7; filter: grayscale(.3); border-style: solid; }
-    .voucher[data-redeemed="true"] .voucher-meta .tag { background: rgba(104, 211, 145, .15); border-color: rgba(104, 211, 145, .35); }
-    .voucher[data-redeemed="true"] .redeemBtn { background: var(--success); color: #0a0f1a; }
-    .voucher .redeemBtn.redeemed { background: var(--success); color: #0a0f1a; }
+    .btn.tiny { padding: 6px 10px; border-radius: 999px; border: 1px solid rgba(194,24,7,.35); background: rgba(194,24,7,.08); color: var(--ink); cursor: pointer; }
+    .voucher[data-redeemed="true"] { opacity: .75; filter: grayscale(.2); border-style: solid; }
+    .voucher[data-redeemed="true"] .btn.tiny { background: rgba(76, 175, 80, .15); border-color: rgba(76, 175, 80, .35); }
 
-    /* Stampa */
-    @media print {
-      body { background: white; color: #111; }
-      .hero, .howto, .message { display: none; }
-      main { padding: 0; }
-      section { border: 0; box-shadow: none; padding: 0; }
-      .grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-      .voucher { background: white; border: 1px dashed #333; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-      .voucher::after { display: none; }
-      .voucher-meta .redeemBtn { display: none; }
-      .voucher-meta .tag { background: #eee; border-color: #ddd; color: #333; }
+    /* Accessibilità: riduci movimento */
+    @media (prefers-reduced-motion: reduce){
+      .vouchers { transition: none; transform: none; }
     }
 
-    /* Reveal */
-    details { margin: 0; }
-    details > summary { list-style: none; }
-    details > summary::-webkit-details-marker { display: none; }
-    details > summary.btn { display: inline-block; }
-    .vouchers { opacity: 0; transform: translateY(12px); transition: opacity .32s ease, transform .32s ease; }
-    details[open] .vouchers { opacity: 1; transform: translateY(0); }
-    @media (prefers-reduced-motion: reduce) { .vouchers { transition: none; transform: none; } }
+    /* Stampa essenziale */
+    @media print {
+      body { background: #fff; color: #000; }
+      .hero { display: none; }
+      main { padding: 0; }
+      section { box-shadow: none; background: #fff; }
+      .voucher { background: #fff; border: 1px dashed #c00; }
+      .btn, .gift-btn, .bow { display: none !important; }
+    }
   </style>
 </head>
 <body>
   <header class="hero">
     <div class="hero-inner">
-      <h1 id="headline">Buon Compleanno, <span id="name">Amore</span>! 🎂</h1>
-      <p class="subtitle">Un piccolo sito fatto apposta per te: auguri + voucher d'amore ❤️</p>
-      <div class="cta-row">
-        <!-- NESSUN JS: il toggle è nativo -->
-        <details id="gift">
-          <summary class="btn primary" aria-controls="vouchers" aria-expanded="false">Apri il regalo</summary>
-          <small class="hint">Scorri un po’ se non li vedi subito 👇</small>
-          <section id="vouchers" class="vouchers">
-            <div class="vouchers-header">
-              <h2>Voucher d'amore</h2>
-              <p>Falli scorrere, clicca per “riscattare”, oppure stampali.</p>
-            </div>
+      <h1>TANTI AUGURI AMORE MIO ❤️</h1>
+      <p class="subtitle">A GIFT JUST FOR YOU</p>
 
-            <div id="voucherGrid" class="grid" aria-live="polite">
-              <article class="voucher" data-redeemed="false">
-                <header class="voucher-title">Colazione a letto</header>
-                <p class="voucher-body">Un vassoio pieno di coccole, cornetto e caffè come piace a te.</p>
-                <div class="voucher-meta">
-                  <span class="tag">Amore</span>
-                  <button class="btn tiny redeemBtn">Riscatta</button>
-                </div>
-              </article>
-
-              <article class="voucher" data-redeemed="false">
-                <header class="voucher-title">1 ora di massaggio</header>
-                <p class="voucher-body">Spalle, schiena, collo: rilassamento garantito.</p>
-                <div class="voucher-meta">
-                  <span class="tag">Amore</span>
-                  <button class="btn tiny redeemBtn">Riscatta</button>
-                </div>
-              </article>
-
-              <article class="voucher" data-redeemed="false">
-                <header class="voucher-title">Serata film a tua scelta</header>
-                <p class="voucher-body">Popcorn inclusi, niente interruzioni. Anche trilogie epiche.</p>
-                <div class="voucher-meta">
-                  <span class="tag">Amore</span>
-                  <button class="btn tiny redeemBtn">Riscatta</button>
-                </div>
-              </article>
-
-              <article class="voucher" data-redeemed="false">
-                <header class="voucher-title">Uscita senza pensieri</header>
-                <p class="voucher-body">Prenotazioni e itinerario li preparo io.</p>
-                <div class="voucher-meta">
-                  <span class="tag">Amore</span>
-                  <button class="btn tiny redeemBtn">Riscatta</button>
-                </div>
-              </article>
-
-              <article class="voucher" data-redeemed="false">
-                <header class="voucher-title">Bugfix casalingo</header>
-                <p class="voucher-body">Sistema qualunque “bug” di casa segnalato da te.</p>
-                <div class="voucher-meta">
-                  <span class="tag">Amore</span>
-                  <button class="btn tiny redeemBtn">Riscatta</button>
-                </div>
-              </article>
-
-              <article class="voucher" data-redeemed="false">
-                <header class="voucher-title">Cena cucinata da me</header>
-                <p class="voucher-body">Menù completo, dall’antipasto al dolce.</p>
-                <div class="voucher-meta">
-                  <span class="tag">Amore</span>
-                  <button class="btn tiny redeemBtn">Riscatta</button>
-                </div>
-              </article>
-
-              <article class="voucher" data-redeemed="false">
-                <header class="voucher-title">Passeggiata mano nella mano</header>
-                <p class="voucher-body">Al tramonto, al parco o dove vuoi.</p>
-                <div class="voucher-meta">
-                  <span class="tag">Amore</span>
-                  <button class="btn tiny redeemBtn">Riscatta</button>
-                </div>
-              </article>
-
-              <article class="voucher" data-redeemed="false">
-                <header class="voucher-title">Giornata offline</header>
-                <p class="voucher-body">Niente schermi, solo noi. Modalità aereo attiva.</p>
-                <div class="voucher-meta">
-                  <span class="tag">Amore</span>
-                  <button class="btn tiny redeemBtn">Riscatta</button>
-                </div>
-              </article>
-
-              <article class="voucher" data-redeemed="false">
-                <header class="voucher-title">Bacio a sorpresa</header>
-                <p class="voucher-body">Redeem immediato. Sempre valido. 😘</p>
-                <div class="voucher-meta">
-                  <span class="tag">Amore</span>
-                  <button class="btn tiny redeemBtn">Riscatta</button>
-                </div>
-              </article>
-            </div>
-          </section>
-        </details>
-
-        <button class="btn ghost" id="printVouchers">Stampa i voucher</button>
+      <div class="cta">
+        <small>Apri il tuo regalo</small>
+        <button id="openGift" class="gift-btn" aria-controls="vouchers" aria-expanded="false">
+          <span class="bow" aria-hidden="true"></span>
+        </button>
       </div>
-      <small class="hint">Tutto fatto con amore, senza librerie esterne.</small>
     </div>
     <canvas id="confetti"></canvas>
   </header>
 
   <main>
-    <section class="message">
-      <h2>Per il mio sviluppatore preferito 💻</h2>
-      <p id="dedica">
-        Oggi si festeggia il commit più importante: <strong>tu</strong>.
-        Grazie per il codice che scrivi e per l'amore che compili ogni giorno.
-        Prometto di non fare mai più <em>push</em> direttamente su main... forse. 😇
-      </p>
-    </section>
+    <!-- Sezione VOUCHERS (inizialmente nascosta) -->
+    <section id="vouchers" class="vouchers" hidden>
+      <div class="vouchers-header">
+        <h2>LOVE VOUCHERS</h2>
+        <p>Avvertenza: questi voucher potrebbero causare dipendenza affettiva e l'uso improprio potrebbe provocare effetti collaterali come eccesso di dolcezza e amore. Utilizzare con moderazione (forse). Scadenza: illimitata.</p>
+      </div>
 
-    <section class="howto">
-      <h2>Come personalizzare ✏️</h2>
-      <ol>
-        <li>Modifica i testi nei blocchi <code>.voucher-title</code> e <code>.voucher-body</code>.</li>
-        <li>Ricarica la pagina dopo il commit su GitHub Pages.</li>
-      </ol>
+      <div class="grid" id="voucherGrid" aria-live="polite">
+        <!-- Placeholder: puoi dirmi i testi e li inserisco. Intanto tre esempi. -->
+        <article class="voucher" data-redeemed="false">
+          <header class="voucher-title">Da compilare</header>
+          <p class="voucher-body">Testo del voucher.</p>
+          <div class="voucher-meta">
+            <span class="tag">Amore</span>
+            <button class="btn tiny redeemBtn" type="button">Riscatta</button>
+          </div>
+        </article>
+
+        <article class="voucher" data-redeemed="false">
+          <header class="voucher-title">Da compilare</header>
+          <p class="voucher-body">Testo del voucher.</p>
+          <div class="voucher-meta">
+            <span class="tag">Amore</span>
+            <button class="btn tiny redeemBtn" type="button">Riscatta</button>
+          </div>
+        </article>
+
+        <article class="voucher" data-redeemed="false">
+          <header class="voucher-title">Da compilare</header>
+          <p class="voucher-body">Testo del voucher.</p>
+          <div class="voucher-meta">
+            <span class="tag">Amore</span>
+            <button class="btn tiny redeemBtn" type="button">Riscatta</button>
+          </div>
+        </article>
+      </div>
     </section>
   </main>
 
-  <footer class="footer">
-    <span>© <span id="year"></span> Con amore ❤️</span>
-  </footer>
-
   <script>
-    // Anno + stampa
-    document.getElementById("year").textContent = new Date().getFullYear();
-    document.getElementById("printVouchers").addEventListener("click", () => window.print());
+    // Apri regalo → mostra sezione con transizione
+    (function(){
+      const btn = document.getElementById("openGift");
+      const sec = document.getElementById("vouchers");
+      btn.addEventListener("click", () => {
+        sec.hidden = false;
+        void sec.offsetHeight;               // trigger CSS transition
+        sec.classList.add("reveal");
+        btn.setAttribute("aria-expanded","true");
+        sec.scrollIntoView({ behavior: "smooth" });
+      });
+    })();
 
-    // Accessibilità summary
-    const gift = document.getElementById("gift");
-    const summary = gift.querySelector("summary");
-    gift.addEventListener("toggle", () => {
-      summary.setAttribute("aria-expanded", gift.open ? "true" : "false");
-      if (gift.open) document.getElementById("vouchers").scrollIntoView({ behavior: "smooth" });
-    });
-
-    // Riscatta (delegato, niente errori anche se cambia il DOM)
+    // Toggle Riscatta (delegato)
     document.addEventListener("click", (e) => {
       if (!e.target.classList.contains("redeemBtn")) return;
       const card = e.target.closest(".voucher");
-      const redeemed = card.dataset.redeemed !== "true";
-      card.dataset.redeemed = redeemed ? "true" : "false";
-      e.target.textContent = redeemed ? "Riscattato" : "Riscatta";
+      const on = card.dataset.redeemed !== "true";
+      card.dataset.redeemed = on ? "true" : "false";
+      e.target.textContent = on ? "Riscattato" : "Riscatta";
     });
 
-    // Confetti (isolato, con try/catch)
-    (function confettiSafe(){
-      try {
-        const canvas = document.getElementById("confetti");
-        const ctx = canvas.getContext("2d");
-        let W, H, pieces = [];
-        function resize(){
-          canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight;
-          W = canvas.width; H = canvas.height;
-          pieces = Array.from({ length: 120 }, () => ({
-            x: Math.random()*W, y: Math.random()*-H,
-            r: 4+Math.random()*6, d: 1+Math.random()*2, tilt: Math.random()*Math.PI
-          }));
+    // Confetti leggero (indipendente)
+    (function confetti(){
+      const canvas = document.getElementById("confetti");
+      const ctx = canvas.getContext("2d");
+      let W, H, pieces = [];
+      function resize(){
+        canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight;
+        W = canvas.width; H = canvas.height;
+        pieces = Array.from({ length: 120 }, () => ({
+          x: Math.random()*W, y: Math.random()*-H,
+          r: 4+Math.random()*6, d: 1+Math.random()*2, tilt: Math.random()*Math.PI
+        }));
+      }
+      window.addEventListener("resize", resize);
+      resize();
+      (function draw(){
+        ctx.clearRect(0,0,W,H);
+        for (const p of pieces){
+          ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.tilt);
+          ctx.fillStyle = Math.random()>.5 ? "#C21807" : "#E43D3D";
+          ctx.fillRect(-p.r/2,-p.r/2,p.r,p.r*.6);
+          ctx.restore();
+          p.y += p.d; p.x += Math.sin(p.y/25)*.8; p.tilt += .02;
+          if (p.y>H+20){ p.y=-10; p.x=Math.random()*W; }
         }
-        window.addEventListener("resize", resize);
-        resize();
-        (function draw(){
-          ctx.clearRect(0,0,W,H);
-          for (const p of pieces) {
-            ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.tilt);
-            ctx.fillStyle = Math.random()>.5
-              ? getComputedStyle(document.documentElement).getPropertyValue("--accent")
-              : getComputedStyle(document.documentElement).getPropertyValue("--accent-2");
-            ctx.fillRect(-p.r/2,-p.r/2,p.r,p.r*.6);
-            ctx.restore();
-            p.y += p.d; p.x += Math.sin(p.y/25)*.8; p.tilt += .02;
-            if (p.y > H+20) { p.y = -10; p.x = Math.random()*W; }
-          }
-          requestAnimationFrame(draw);
-        })();
-      } catch(_) { /* ignora qualsiasi errore per non bloccare il resto */ }
+        requestAnimationFrame(draw);
+      })();
     })();
   </script>
 </body>
