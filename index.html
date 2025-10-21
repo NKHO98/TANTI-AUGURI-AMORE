@@ -7,61 +7,46 @@
   <meta name="description" content="A special gift just for you. Love vouchers." />
   <meta name="theme-color" content="#FFFBE2" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='0.9em' font-size='84'%3E%F0%9F%92%96%3C/text%3E%3C/svg%3E">
-
-  <!-- Font per il sottotitolo -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      --bg:#FFFBE2;           /* giallo pastello chiarissimo */
-      --ink:#C21807;          /* rosso ciliegia */
-      --card:#FFFAD1;         /* card un filo più chiare */
-      --accent:#C21807;
-      --accent-2:#E64747;
-      --shadow:0 8px 24px rgba(0,0,0,.08);
-      --radius:16px;
+      --bg:#FFFBE2; --ink:#C21807; --card:#FFFAD1;
+      --accent:#C21807; --accent-2:#E64747;
+      --shadow:0 8px 24px rgba(0,0,0,.08); --radius:16px;
     }
-
-    *{box-sizing:border-box}
-    html,body{margin:0;padding:0}
+    *{box-sizing:border-box} html,body{margin:0;padding:0}
     body{background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;line-height:1.6}
 
     /* Hero */
     .hero{position:relative;padding:64px 16px 40px}
     .hero-inner{max-width:960px;margin:0 auto;text-align:center}
-    h1{margin:0 0 6px;font-size:clamp(32px,5vw,56px);letter-spacing:.4px}
+    h1{margin:0 0 6px;font-size:clamp(32px,5vw,56px)}
     .subtitle{margin:0 0 24px;font-family:"Dancing Script",cursive;font-size:clamp(22px,3.2vw,34px);font-weight:700}
     #confetti{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 
     /* CTA */
     .cta{display:grid;justify-items:center;gap:12px;margin-top:18px}
     .cta small{font-size:13px;opacity:.9;text-transform:uppercase;letter-spacing:.5px}
-    .gift-btn{margin-top:24px;border:0;background:transparent;cursor:pointer;width:136px;height:136px;position:relative}
+    .gift-btn{margin-top:24px;border:0;background:transparent;cursor:pointer;width:140px;height:140px;position:relative}
     .gift-btn svg{width:100%;height:100%;transition:transform .25s ease}
     .gift-btn:hover svg{transform:translateY(-3px)}
 
-    /* Sezioni */
+    /* Sections / vouchers */
     main{max-width:1000px;margin:0 auto;padding:24px 16px 56px}
     section{margin:24px 0;background:rgba(255,255,255,.5);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
     section h2{margin:0 0 8px;text-align:center}
-
-    /* Vouchers */
     .vouchers[hidden]{display:none}
     .vouchers{opacity:0;transform:translateY(10px);transition:opacity .28s ease,transform .28s ease}
     .vouchers.reveal{opacity:1;transform:translateY(0)}
     .vouchers-header p{margin:6px auto 16px;font-size:14px;max-width:800px;text-align:center}
 
     .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
-    .voucher{
-      background:var(--card);
-      border:1px dashed rgba(194,24,7,.55);
-      border-radius:14px;padding:14px;min-height:150px;
-      display:flex;flex-direction:column;gap:10px
-    }
+    .voucher{background:var(--card);border:1px dashed rgba(194,24,7,.55);border-radius:14px;padding:14px;min-height:150px;display:flex;flex-direction:column;gap:10px}
     .voucher-title{font-weight:800;text-transform:uppercase;letter-spacing:.3px;margin:0}
     .voucher-body{font-style:italic;margin:0}
-    .voucher-body::first-letter{ text-transform:uppercase }
+    .voucher-body::first-letter{text-transform:uppercase}
     .voucher-meta{display:flex;align-items:center;justify-content:space-between;gap:8px}
     .meta-right{font-size:12px;opacity:.9}
     .redeemBtn{padding:6px 10px;border-radius:999px;border:1px solid rgba(194,24,7,.35);background:rgba(194,24,7,.08);color:var(--ink);cursor:pointer;font-size:12px}
@@ -70,11 +55,8 @@
 
     @media (prefers-reduced-motion:reduce){.vouchers{transition:none;transform:none}}
     @media print{
-      body{background:#fff;color:#000}
-      .hero{display:none}
-      main{padding:0}
-      section{box-shadow:none;background:#fff}
-      .voucher{background:#fff;border:1px dashed #c00}
+      body{background:#fff;color:#000} .hero{display:none} main{padding:0}
+      section{box-shadow:none;background:#fff} .voucher{background:#fff;border:1px dashed #c00}
       .redeemBtn{display:none}
     }
   </style>
@@ -87,10 +69,12 @@
 
       <div class="cta">
         <small>CLICCA PER SPACCHETTARE IL TUO REGALO</small>
-        <button id="openGift" class="gift-btn" aria-controls="vouchers" aria-expanded="false">
-          <!-- Pacchetto realistico SVG -->
-          <svg viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <!-- ombra morbida -->
+
+        <!-- Bottone pacchetto: onclick inline + id per fallback -->
+        <button id="openGift" class="gift-btn" aria-controls="vouchers" aria-expanded="false" onclick="window.openGift && window.openGift()">
+          <!-- Pacchetto realistico SVG con FIOCCO -->
+          <svg viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img">
+            <!-- ombra -->
             <ellipse cx="64" cy="114" rx="38" ry="8" fill="rgba(0,0,0,.10)"/>
             <!-- scatola -->
             <rect x="20" y="46" width="88" height="64" rx="8" fill="#C21807"/>
@@ -101,11 +85,16 @@
             <!-- nastri -->
             <rect x="60" y="32" width="8" height="78" rx="2" fill="#FFD2D2"/>
             <rect x="16" y="58" width="96" height="8" rx="2" fill="#FFD2D2"/>
-            <!-- fiocco -->
+            <!-- fiocco centrale + anelli -->
             <g transform="translate(64 30)">
-              <path d="M0 0 C -18 -14, -30 -2, -16 8 C -8 12, -2 10, 0 6 Z" fill="#FFD2D2"/>
-              <path d="M0 0 C 18 -14, 30 -2, 16 8 C 8 12, 2 10, 0 6 Z" fill="#FFD2D2"/>
-              <circle cx="0" cy="6" r="4" fill="#FFD2D2"/>
+              <!-- anelli fiocco -->
+              <path d="M-24,0 C-40,-18 -14,-24 -10,-6 C-8,2 -14,8 -22,6 Z" fill="#FFD2D2"/>
+              <path d="M24,0 C40,-18 14,-24 10,-6 C8,2 14,8 22,6 Z" fill="#FFD2D2"/>
+              <!-- nodo -->
+              <circle cx="0" cy="6" r="5" fill="#FFD2D2" stroke="#9B1505" stroke-width="1.2"/>
+              <!-- codine -->
+              <path d="M-2,10 L-8,20" stroke="#FFD2D2" stroke-width="3" stroke-linecap="round"/>
+              <path d="M2,10 L8,20" stroke="#FFD2D2" stroke-width="3" stroke-linecap="round"/>
             </g>
             <!-- gradienti -->
             <defs>
@@ -134,7 +123,6 @@
       </div>
 
       <div class="grid" id="voucherGrid">
-        <!-- 1 -->
         <article class="voucher" data-redeemed="false" data-idx="1">
           <header class="voucher-title">GRATTINI</header>
           <p class="voucher-body">Questo voucher dà diritto ad una sessione della durata di 30 minuti di grattini a scelta.</p>
@@ -143,7 +131,6 @@
             <div class="meta-right"></div>
           </div>
         </article>
-        <!-- 2 -->
         <article class="voucher" data-redeemed="false" data-idx="2">
           <header class="voucher-title">MASSAGGIO RILASSANTE</header>
           <p class="voucher-body">Questo voucher dà diritto ad un massaggio rilassante completo della durata di 60 minuti.</p>
@@ -152,7 +139,6 @@
             <div class="meta-right"></div>
           </div>
         </article>
-        <!-- 3 -->
         <article class="voucher" data-redeemed="false" data-idx="3">
           <header class="voucher-title">SERATA FILM</header>
           <p class="voucher-body">Questo voucher ti dà il diritto di scegliere un film che vuoi tu, con snack che desideri offerti o cena sul divano.</p>
@@ -161,7 +147,6 @@
             <div class="meta-right"></div>
           </div>
         </article>
-        <!-- 4 -->
         <article class="voucher" data-redeemed="false" data-idx="4">
           <header class="voucher-title">COMANDI TU</header>
           <p class="voucher-body">Per una giornata intera si farà tutto ciò che desideri, qualsiasi cosa.</p>
@@ -170,7 +155,6 @@
             <div class="meta-right"></div>
           </div>
         </article>
-        <!-- 5 -->
         <article class="voucher" data-redeemed="false" data-idx="5">
           <header class="voucher-title">COLAZIONE A LETTO</header>
           <p class="voucher-body">La tua colazione a scelta direttamente a letto, utilizzare il voucher con anticipo.</p>
@@ -179,7 +163,6 @@
             <div class="meta-right"></div>
           </div>
         </article>
-        <!-- 6 -->
         <article class="voucher" data-redeemed="false" data-idx="6">
           <header class="voucher-title">CHEF PERSONALE</header>
           <p class="voucher-body">Utilizzando questo voucher, il beneficiario potrà godere di una cena a scelta preparata dal partner che si dovrà occupare di tutto, dalla spesa alla pulizia della cucina.</p>
@@ -188,7 +171,6 @@
             <div class="meta-right"></div>
           </div>
         </article>
-        <!-- 7 -->
         <article class="voucher" data-redeemed="false" data-idx="7">
           <header class="voucher-title">FANTASIA PICCANTE</header>
           <p class="voucher-body">Questo buono dà il diritto alla realizzazione di qualsiasi fantasia da parte del partner.</p>
@@ -197,7 +179,6 @@
             <div class="meta-right"></div>
           </div>
         </article>
-        <!-- 8 -->
         <article class="voucher" data-redeemed="false" data-idx="8">
           <header class="voucher-title">BOCCONOTTO NOW</header>
           <p class="voucher-body">Questo voucher dà il diritto a ricevere nell'immediato un bocconotto.</p>
@@ -206,7 +187,6 @@
             <div class="meta-right"></div>
           </div>
         </article>
-        <!-- 9 -->
         <article class="voucher" data-redeemed="false" data-idx="9">
           <header class="voucher-title">GAME NIGHT</header>
           <p class="voucher-body">Serata game a scelta, che siano giochi da tavola, giochi online o bowling.</p>
@@ -215,7 +195,6 @@
             <div class="meta-right"></div>
           </div>
         </article>
-        <!-- 10 -->
         <article class="voucher" data-redeemed="false" data-idx="10">
           <header class="voucher-title">CINEMA</header>
           <p class="voucher-body">Questo buono dà il diritto di usufruire di una serata cinema con film a scelta, tutto offerto.</p>
@@ -229,20 +208,29 @@
   </main>
 
   <script>
-    // Mostra i vouchers al click
-    (function(){
-      const btn=document.getElementById("openGift");
-      const sec=document.getElementById("vouchers");
-      btn.addEventListener("click",()=>{
+    /* ==== Apertura regalo (robusto) ==== */
+    function openGift(){
+      try{
+        const sec=document.getElementById("vouchers");
+        if(!sec) return;
         sec.hidden=false;
-        void sec.offsetHeight;               // trigger transizione CSS
+        void sec.offsetHeight; // trigger transizione
         sec.classList.add("reveal");
-        btn.setAttribute("aria-expanded","true");
+        const btn=document.getElementById("openGift");
+        if(btn) btn.setAttribute("aria-expanded","true");
         sec.scrollIntoView({behavior:"smooth"});
-      });
-    })();
+        burstConfetti(); // esplosione extra
+      }catch(e){ console.error(e); }
+    }
+    // Fallback: anche con addEventListener
+    document.addEventListener("DOMContentLoaded",()=>{
+      const btn=document.getElementById("openGift");
+      if(btn) btn.addEventListener("click", openGift);
+      loadState();
+      startConfetti(); // confetti leggeri sempre attivi
+    });
 
-    // Utilità data IT
+    /* ==== Utilità data ==== */
     function todayIT(){
       const d=new Date();
       return `${String(d.getDate()).padStart(2,"0")}/${String(d.getMonth()+1).padStart(2,"0")}/${d.getFullYear()}`;
@@ -254,7 +242,7 @@
       return dt.getFullYear()===yyyy&&dt.getMonth()===(mm-1)&&dt.getDate()===dd;
     }
 
-    // Carica stato salvato
+    /* ==== Stato vouchers ==== */
     function loadState(){
       document.querySelectorAll(".voucher").forEach(v=>{
         const idx=v.dataset.idx;
@@ -264,20 +252,18 @@
         const meta=v.querySelector(".meta-right");
         if(redeemed){
           v.dataset.redeemed="true";
-          btn.textContent="Riscattato";
+          if(btn) btn.textContent="Riscattato";
           if(date) meta.innerHTML=`<span class="date-badge">Riscattato il: ${date}</span>`;
         }
       });
     }
 
-    // Riscatta → persist + data
-    document.addEventListener("click", (e)=>{
+    document.addEventListener("click",(e)=>{
       if(!e.target.classList.contains("redeemBtn")) return;
       const card=e.target.closest(".voucher");
       const idx=card.dataset.idx;
       const meta=card.querySelector(".meta-right");
       const already=card.dataset.redeemed==="true";
-
       if(!already){
         let date=prompt("Inserisci la data di riscatto (GG/MM/AAAA):", todayIT());
         if(!date) return;
@@ -288,40 +274,54 @@
         localStorage.setItem(`voucher_${idx}_date`,date);
         meta.innerHTML=`<span class="date-badge">Riscattato il: ${date}</span>`;
       }
-      // Se vuoi poter annullare il riscatto, scommenta le righe sotto:
-      // else {
-      //   if(confirm("Vuoi annullare il riscatto?")){
-      //     card.dataset.redeemed="false";
-      //     e.target.textContent="Riscatta";
-      //     localStorage.removeItem(`voucher_${idx}_redeemed`);
-      //     localStorage.removeItem(`voucher_${idx}_date`);
-      //     meta.innerHTML="";
-      //   }
-      // }
     });
 
-    // Confetti leggeri
-    (function confetti(){
-      const c=document.getElementById("confetti"),x=c.getContext("2d");
-      function resize(){ c.width=c.offsetWidth; c.height=c.offsetHeight; }
-      window.addEventListener("resize",resize); resize();
-      let pieces=Array.from({length:120},()=>({x:Math.random()*c.width,y:Math.random()*-c.height,r:4+Math.random()*6,d:1+Math.random()*2,t:Math.random()*Math.PI}));
-      (function draw(){
-        x.clearRect(0,0,c.width,c.height);
-        for(const p of pieces){
-          x.save(); x.translate(p.x,p.y); x.rotate(p.t);
-          x.fillStyle=Math.random()>.5?"#C21807":"#E64747";
-          x.fillRect(-p.r/2,-p.r/2,p.r,p.r*.6);
-          x.restore();
-          p.y+=p.d; p.x+=Math.sin(p.y/25)*.8; p.t+=.02;
-          if(p.y>c.height+20){ p.y=-10; p.x=Math.random()*c.width; }
+    /* ==== Confetti ==== */
+    let confettiCanvas, ctx, confettiPieces=[];
+    function startConfetti(){
+      confettiCanvas=document.getElementById("confetti");
+      if(!confettiCanvas) return;
+      ctx=confettiCanvas.getContext("2d");
+      resizeConfetti(); window.addEventListener("resize", resizeConfetti);
+      // pioggia leggera continua
+      confettiPieces = Array.from({length:100}, ()=>spawnPiece(true));
+      animateConfetti();
+    }
+    function resizeConfetti(){
+      confettiCanvas.width = confettiCanvas.offsetWidth;
+      confettiCanvas.height = confettiCanvas.offsetHeight;
+    }
+    function spawnPiece(topRandom=false){
+      const w=confettiCanvas.width, h=confettiCanvas.height;
+      return {
+        x: Math.random()*w,
+        y: topRandom ? Math.random()*-h : -10,
+        r: 4+Math.random()*6,
+        d: 1+Math.random()*2,
+        t: Math.random()*Math.PI
+      };
+    }
+    function animateConfetti(){
+      ctx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);
+      for(const p of confettiPieces){
+        ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.t);
+        ctx.fillStyle = Math.random()>.5 ? "#C21807" : "#E64747";
+        ctx.fillRect(-p.r/2,-p.r/2,p.r,p.r*.6);
+        ctx.restore();
+        p.y += p.d; p.x += Math.sin(p.y/25)*.8; p.t += .02;
+        if(p.y > confettiCanvas.height+20){ // ricicla
+          p.y = -10; p.x = Math.random()*confettiCanvas.width;
         }
-        requestAnimationFrame(draw);
-      })();
-    })();
-
-    // Inizializza stato voucher
-    loadState();
+      }
+      requestAnimationFrame(animateConfetti);
+    }
+    function burstConfetti(){
+      if(!confettiCanvas) return;
+      // aggiunge un piccolo burst di pezzi in alto
+      for(let i=0;i<60;i++){ confettiPieces.push(spawnPiece(false)); }
+      // limita il totale
+      if(confettiPieces.length>240) confettiPieces = confettiPieces.slice(-240);
+    }
   </script>
 </body>
 </html>
