@@ -8,7 +8,7 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='0.9em' font-size='90'%3E%F0%9F%92%96%3C/text%3E%3C/svg%3E">
 
   <style>
-    /* ---------- Reset leggero ---------- */
+    /* Reset */
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; }
     :root {
@@ -22,7 +22,6 @@
       --shadow: 0 10px 30px rgba(0,0,0,.35);
       --radius: 16px;
     }
-
     body {
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif;
       color: var(--ink);
@@ -30,17 +29,16 @@
       line-height: 1.6;
     }
 
-    /* ---------- Hero ---------- */
+    /* Hero */
     .hero { position: relative; padding: 72px 16px 32px; overflow: hidden; }
     .hero-inner { max-width: 960px; margin: 0 auto; text-align: center; }
     h1 { font-size: clamp(32px, 5vw, 60px); margin: 0 0 8px; }
     .subtitle { margin: 0 0 24px; color: var(--muted); }
     .cta-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
     .hint { display: block; margin-top: 10px; color: var(--muted); font-size: 12px; }
-
     #confetti { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; mix-blend-mode: screen; }
 
-    /* ---------- Buttons ---------- */
+    /* Buttons */
     .btn {
       border: 0;
       border-radius: 999px;
@@ -56,13 +54,13 @@
     .btn:active { transform: translateY(0) scale(.99); }
     .btn.tiny { padding: 6px 10px; font-size: 12px; }
 
-    /* ---------- Sections ---------- */
+    /* Sections */
     main { max-width: 1000px; margin: 0 auto; padding: 24px 16px 56px; }
     section { margin: 24px 0; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,.08); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); backdrop-filter: blur(8px); }
     section h2 { margin-top: 0; }
     .message p { font-size: 18px; }
 
-    /* ---------- Grid vouchers ---------- */
+    /* Grid vouchers */
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -107,10 +105,10 @@
     .voucher[data-redeemed="true"] .redeemBtn { background: var(--success); color: #0a0f1a; }
     .voucher .redeemBtn.redeemed { background: var(--success); color: #0a0f1a; }
 
-    /* ---------- Footer ---------- */
+    /* Footer */
     .footer { text-align: center; color: var(--muted); padding: 24px; }
 
-    /* ---------- Stampa ---------- */
+    /* Stampa */
     @media print {
       body { background: white; color: #111; }
       .hero, .howto, .message { display: none; }
@@ -122,28 +120,13 @@
       .voucher-meta .redeemBtn { display: none; }
       .voucher-meta .tag { background: #eee; border-color: #ddd; color: #333; }
     }
-  /* --- Mostra/nascondi e animazione per i voucher --- */
-.vouchers[hidden] { display: none; }
 
-.vouchers {
-  opacity: 0;
-  transform: translateY(12px);
-  transition: opacity .32s ease, transform .32s ease;
-}
-.vouchers.reveal {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Se l'utente preferisce meno movimento, niente animazioni */
-@media (prefers-reduced-motion: reduce) {
-  .vouchers { transition: none; transform: none; }
-}
-
-/* In stampa i voucher devono vedersi sempre */
-@media print {
-  .vouchers[hidden] { display: block !important; opacity: 1 !important; transform: none !important; }
-}  
+    /* Reveal vouchers */
+    .vouchers[hidden] { display: none; }
+    .vouchers { opacity: 0; transform: translateY(12px); transition: opacity .32s ease, transform .32s ease; }
+    .vouchers.reveal { opacity: 1; transform: translateY(0); }
+    @media (prefers-reduced-motion: reduce) { .vouchers { transition: none; transform: none; } }
+    @media print { .vouchers[hidden] { display: block !important; opacity: 1 !important; transform: none !important; } }
   </style>
 </head>
 <body>
@@ -152,31 +135,7 @@
       <h1 id="headline">Buon Compleanno, <span id="name">Amore</span>! 🎂</h1>
       <p class="subtitle">Un piccolo sito fatto apposta per te: auguri + voucher d'amore ❤️</p>
       <div class="cta-row">
-        
-<button
-  class="btn primary"
-  id="openGift"
-  aria-controls="vouchers"
-  aria-expanded="false"
-  onclick="(function(){
-    var v = document.getElementById('vouchers');
-    var btn = document.getElementById('openGift');
-    if(!v) return;
-    // Mostra i voucher
-    v.hidden = false;
-    // Effetto di comparsa (se il CSS c’è, parte; se no forziamo comunque)
-    v.classList.add('reveal');
-    v.style.opacity = '1';
-    v.style.transform = 'none';
-    // Aggiorna stato accessibile
-    if(btn) btn.setAttribute('aria-expanded','true');
-    // Scorri fino ai voucher
-    v.scrollIntoView({behavior:'smooth'});
-  })();"
->
-  Apri il regalo
-</button>
-        
+        <button class="btn primary" id="openGift" aria-controls="vouchers" aria-expanded="false">Apri il regalo</button>
         <button class="btn ghost" id="printVouchers">Stampa i voucher</button>
       </div>
       <small class="hint">Tutto fatto con amore, senza librerie esterne.</small>
@@ -188,14 +147,13 @@
     <section class="message">
       <h2>Per il mio sviluppatore preferito 💻</h2>
       <p id="dedica">
-        <!-- <-- PERSONALIZZA QUI (testo dedica) -->
         Oggi si festeggia il commit più importante: <strong>tu</strong>.
         Grazie per il codice che scrivi e per l'amore che compili ogni giorno.
         Prometto di non fare mai più <em>push</em> direttamente su main... forse. 😇
       </p>
     </section>
 
-    <section id="vouchers" class="vouchers" hidden>      
+    <section id="vouchers" class="vouchers" hidden>
       <div class="vouchers-header">
         <h2>Voucher d'amore</h2>
         <p>Falli scorrere, clicca per “riscattare”, oppure stampali. Sono validi fino a esaurimento coccole!</p>
@@ -228,15 +186,12 @@
   </template>
 
   <script>
-    // =======================
-    // CONFIG (PERSONALIZZA)
-    // =======================
+    // Config
     const CONFIG = {
-      name: "Amore", // <-- PERSONALIZZA QUI (nome del festeggiato)
+      name: "Amore",
       headline: "Buon Compleanno, {name}! 🎂",
-      colors: { accent: "#ff7ac6", accent2: "#7ad6ff" }, // <-- colori tema
+      colors: { accent: "#ff7ac6", accent2: "#7ad6ff" },
       vouchers: [
-        // <-- PERSONALIZZA QUI (lista voucher)
         { title: "Colazione a letto", text: "Un vassoio pieno di coccole, cornetto e caffè come piace a te." },
         { title: "1 ora di massaggio", text: "Spalle, schiena, collo: rilassamento garantito." },
         { title: "Serata film a tua scelta", text: "Popcorn inclusi, niente interruzioni. Anche trilogie epiche." },
@@ -249,48 +204,41 @@
       ]
     };
 
-    // =======================
-    // SCRIPT (non serve toccare)
-    // =======================
+    // Utils
     const $ = (sel, ctx = document) => ctx.querySelector(sel);
 
+    // Theme + headline
     function applyConfig() {
-      const nameEl = $("#name");
       const headlineEl = $("#headline");
       const yearEl = $("#year");
-
       const h = CONFIG.headline.replace("{name}", CONFIG.name);
-      headlineEl.textContent = "";
-      headlineEl.insertAdjacentHTML("beforeend", h);
-      nameEl.textContent = CONFIG.name;
+      headlineEl.innerHTML = h;
+      $("#name").textContent = CONFIG.name;
       yearEl.textContent = new Date().getFullYear();
-
-      // Colors dinamici
       const root = document.documentElement;
       root.style.setProperty("--accent", CONFIG.colors.accent);
       root.style.setProperty("--accent-2", CONFIG.colors.accent2);
     }
 
+    // Build vouchers
     function buildVouchers() {
       const grid = $("#voucherGrid");
       const tpl = $("#voucherTemplate");
       grid.innerHTML = "";
-
       CONFIG.vouchers.forEach((v, idx) => {
         const node = tpl.content.cloneNode(true);
         node.querySelector(".voucher-title").textContent = v.title;
         node.querySelector(".voucher-body").textContent = v.text;
         const article = node.querySelector(".voucher");
-        // Ripristina stato "riscattato" da localStorage
         const redeemed = localStorage.getItem(`voucher_${idx}`) === "1";
         article.dataset.redeemed = redeemed ? "true" : "false";
         const btn = node.querySelector(".redeemBtn");
         if (redeemed) btn.classList.add("redeemed");
         btn.textContent = redeemed ? "Riscattato" : "Riscatta";
         btn.addEventListener("click", () => {
-          const newVal = article.dataset.redeemed !== "true";
-          article.dataset.redeemed = newVal ? "true" : "false";
-          if (newVal) {
+          const on = article.dataset.redeemed !== "true";
+          article.dataset.redeemed = on ? "true" : "false";
+          if (on) {
             btn.classList.add("redeemed");
             btn.textContent = "Riscattato";
             localStorage.setItem(`voucher_${idx}`, "1");
@@ -304,101 +252,64 @@
       });
     }
 
+    // Print
     function setupPrint() {
       $("#printVouchers").addEventListener("click", () => window.print());
     }
 
-    // Confetti minimal
+    // Confetti (light)
     function confetti() {
       const canvas = document.getElementById("confetti");
       const ctx = canvas.getContext("2d");
-      let W, H, pieces;
-
+      let W, H, pieces = [];
       function resize() {
         W = canvas.width = canvas.offsetWidth;
         H = canvas.height = canvas.offsetHeight;
         pieces = Array.from({ length: 120 }, () => ({
-          x: Math.random() * W,
-          y: Math.random() * -H,
-          r: 4 + Math.random() * 6,
-          d: 1 + Math.random() * 2,
-          tilt: Math.random() * Math.PI,
+          x: Math.random() * W, y: Math.random() * -H,
+          r: 4 + Math.random() * 6, d: 1 + Math.random() * 2, tilt: Math.random() * Math.PI,
         }));
       }
       window.addEventListener("resize", resize);
       resize();
-
-      function draw() {
+      (function draw(){
         ctx.clearRect(0, 0, W, H);
         for (const p of pieces) {
-          ctx.save();
-          ctx.translate(p.x, p.y);
-          ctx.rotate(p.tilt);
-          ctx.fillStyle =
-            Math.random() > .5
-              ? getComputedStyle(document.documentElement).getPropertyValue("--accent")
-              : getComputedStyle(document.documentElement).getPropertyValue("--accent-2");
-          ctx.fillRect(-p.r/2, -p.r/2, p.r, p.r * .6);
+          ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.tilt);
+          ctx.fillStyle = Math.random() > .5
+            ? getComputedStyle(document.documentElement).getPropertyValue("--accent")
+            : getComputedStyle(document.documentElement).getPropertyValue("--accent-2");
+          ctx.fillRect(-p.r/2, -p.r/2, p.r, p.r*.6);
           ctx.restore();
-          p.y += p.d;
-          p.x += Math.sin(p.y / 25) * 0.8;
-          p.tilt += 0.02;
+          p.y += p.d; p.x += Math.sin(p.y/25)*0.8; p.tilt += 0.02;
           if (p.y > H + 20) { p.y = -10; p.x = Math.random() * W; }
         }
         requestAnimationFrame(draw);
-      }
-      draw();
+      })();
     }
 
+    // App
     function init() {
       applyConfig();
-      buildVouchers();
       setupPrint();
       confetti();
- document.getElementById("openGift").addEventListener("click", () => {
-  const vouchers = document.getElementById("vouchers");
-  const btn = document.getElementById("openGift");
 
-  // Mostra i voucher
-  vouchers.hidden = false;
+      let built = false;
+      const btn = document.getElementById("openGift");
+      const vouchers = document.getElementById("vouchers");
 
-  // Fa partire l’effetto di apparizione
-  void vouchers.offsetHeight;
-  vouchers.classList.add("reveal");
-
-  // Aggiorna lo stato del bottone
-  btn.setAttribute("aria-expanded", "true");
-
-  // Scorri piano verso i voucher
-  vouchers.scrollIntoView({ behavior: "smooth" });
-});
+      btn.addEventListener("click", () => {
+        if (!built) { buildVouchers(); built = true; }
+        vouchers.hidden = false;
+        // trigger CSS transition
+        void vouchers.offsetHeight;
+        vouchers.classList.add("reveal");
+        btn.setAttribute("aria-expanded", "true");
+        vouchers.scrollIntoView({ behavior: "smooth" });
       });
     }
 
     document.addEventListener("DOMContentLoaded", init);
   </script>
-
-  <script>
-  // Fix super-semplice per mostrare i voucher al click
-  window.addEventListener('DOMContentLoaded', function () {
-    const btn = document.getElementById('openGift');
-    const vouchers = document.getElementById('vouchers');
-
-    if (!btn || !vouchers) return;
-
-    btn.addEventListener('click', function () {
-      // 1) Mostra la sezione nascosta
-      vouchers.hidden = false;
-
-      // 2) Se per qualche motivo l’animazione non parte, forziamo visibilità
-      vouchers.classList.add('reveal');
-      vouchers.style.opacity = '1';
-      vouchers.style.transform = 'none';
-
-      // 3) Vai giù ai voucher
-      vouchers.scrollIntoView({ behavior: 'smooth' });
-    });
-  });
-</script>
 </body>
 </html>
