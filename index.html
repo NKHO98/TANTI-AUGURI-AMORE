@@ -335,8 +335,23 @@
       buildVouchers();
       setupPrint();
       confetti();
-      document.getElementById("openGift").addEventListener("click", () => {
-        document.querySelector(".vouchers").scrollIntoView({ behavior: "smooth" });
+ document.getElementById("openGift").addEventListener("click", () => {
+  const vouchers = document.getElementById("vouchers");
+  const btn = document.getElementById("openGift");
+
+  // Mostra i voucher
+  vouchers.hidden = false;
+
+  // Fa partire l’effetto di apparizione
+  void vouchers.offsetHeight;
+  vouchers.classList.add("reveal");
+
+  // Aggiorna lo stato del bottone
+  btn.setAttribute("aria-expanded", "true");
+
+  // Scorri piano verso i voucher
+  vouchers.scrollIntoView({ behavior: "smooth" });
+});
       });
     }
 
