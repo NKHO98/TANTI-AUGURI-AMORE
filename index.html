@@ -6,117 +6,49 @@
   <title>TANTI AUGURI AMORE MIO ❤️</title>
   <meta name="description" content="A special gift just for you. Love vouchers.">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='0.9em' font-size='90'%3E%F0%9F%92%96%3C/text%3E%3C/svg%3E">
-
-  <!-- Dancing Script per il sottotitolo -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      --bg: #FFFBE2;          /* giallo pastello chiarissimo */
-      --ink: #C21807;         /* rosso ciliegia */
-      --card: #FFF7C2;        /* giallo un po' più chiaro per le card */
-      --accent: #C21807;
-      --accent-2: #E64747;
-      --shadow: 0 8px 24px rgba(0,0,0,.08);
-      --radius: 16px;
+      --bg:#FFFBE2;--ink:#C21807;--card:#FFF7C2;
+      --accent:#C21807;--accent-2:#E64747;
+      --shadow:0 8px 24px rgba(0,0,0,.08);
+      --radius:16px;
     }
-    *{box-sizing:border-box}
-    html,body{margin:0;padding:0}
-    body{
-      background:var(--bg);
-      color:var(--ink);
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif;
-      line-height:1.6;
-    }
+    *{box-sizing:border-box}html,body{margin:0;padding:0}
+    body{background:var(--bg);color:var(--ink);font-family:system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif;line-height:1.6;}
 
-    /* HERO */
     .hero{position:relative;padding:64px 16px 40px}
     .hero-inner{max-width:960px;margin:0 auto;text-align:center}
-    h1{margin:0 0 6px;font-size:clamp(32px,5vw,56px);letter-spacing:.4px}
-    .subtitle{
-      margin:0 0 24px;
-      font-family:"Dancing Script",cursive;
-      font-size:clamp(22px,3.2vw,34px);
-      font-weight:700;
-      text-transform:none;
-    }
-    .cta{display:grid;justify-items:center;gap:10px}
-    .cta small{font-size:12px;opacity:.9}
+    h1{margin:0 0 6px;font-size:clamp(32px,5vw,56px)}
+    .subtitle{margin:0 0 24px;font-family:"Dancing Script",cursive;font-size:clamp(22px,3.2vw,34px);font-weight:700}
 
-    /* PACCHETTO REGALO (carino) */
-    .gift-btn{
-      position:relative; width:132px; height:120px;
-      border:0; cursor:pointer; background:transparent;
-    }
-    .box, .lid{
-      position:absolute; left:50%; transform:translateX(-50%); border-radius:12px; box-shadow:var(--shadow);
-    }
-    .box{
-      bottom:0; width:132px; height:92px; background:var(--accent);
-    }
-    .lid{
-      bottom:76px; width:140px; height:36px; background:var(--accent);
-    }
-    /* nastri */
-    .box::before, .lid::before{
-      content:""; position:absolute; left:50%; transform:translateX(-50%); background:var(--accent-2);
-    }
-    .box::before{ top:0; width:14px; height:100%; border-radius:6px}
-    .lid::before{ top:0; width:100%; height:12px; border-radius:12px}
-    /* fiocco */
-    .bow, .bow::before{
-      content:""; position:absolute; left:50%; transform:translateX(-50%); top:-10px;
-      width:22px; height:22px; background:var(--accent-2); border-radius:50%;
-      box-shadow:var(--shadow);
-    }
-    .bow::before{ left:auto; right:-26px }
-    .gift-btn:hover .lid{ transform:translateX(-50%) translateY(-2px) rotate(-1deg) }
-    .gift-btn:active .lid{ transform:translateX(-50%) translateY(-1px) }
+    .cta{display:grid;justify-items:center;gap:12px;margin-top:18px}
+    .cta small{font-size:13px;opacity:.9;text-transform:uppercase;letter-spacing:0.5px}
+    .gift-btn{margin-top:10px;border:0;background:transparent;cursor:pointer;width:130px;height:130px;position:relative;}
+    .gift-btn svg{width:100%;height:100%;transition:transform .25s ease}
+    .gift-btn:hover svg{transform:translateY(-3px)}
+    #confetti{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 
-    /* SEZIONI */
     main{max-width:1000px;margin:0 auto;padding:24px 16px 56px}
     section{margin:24px 0;background:rgba(255,255,255,.5);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
     section h2{margin:0 0 8px;text-align:center}
-
-    /* VOUCHERS */
     .vouchers[hidden]{display:none}
-    .vouchers{opacity:0;transform:translateY(10px);transition:opacity .28s ease, transform .28s ease}
+    .vouchers{opacity:0;transform:translateY(10px);transition:opacity .28s ease,transform .28s ease}
     .vouchers.reveal{opacity:1;transform:translateY(0)}
     .vouchers-header p{margin:6px auto 16px;font-size:14px;max-width:800px;text-align:center}
-
     .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
-    .voucher{
-      background:var(--card);
-      border:1px dashed rgba(194,24,7,.55);
-      border-radius:14px; padding:14px; min-height:150px;
-      display:flex; flex-direction:column; gap:10px;
-    }
-    .voucher-title{font-weight:800; text-transform:uppercase; letter-spacing:.3px; text-align:left}
-    .voucher-body{font-style:italic; text-transform:none; text-align:left; margin:0}
-    .voucher-meta{display:flex; align-items:center; justify-content:space-between; gap:8px}
-    .meta-right{display:flex; align-items:center; gap:8px; font-size:12px; opacity:.9}
-    .redeemBtn{
-      padding:6px 10px; border-radius:999px; border:1px solid rgba(194,24,7,.35);
-      background:rgba(194,24,7,.08); color:var(--ink); cursor:pointer; font-size:12px;
-    }
-    .voucher[data-redeemed="true"]{opacity:.85; border-style:solid}
-    .date-badge{font-size:11px; padding:4px 8px; border-radius:999px; background:rgba(194,24,7,.08); border:1px solid rgba(194,24,7,.25)}
-
-    /* confetti canvas */
-    #confetti{position:absolute; inset:0; width:100%; height:100%; pointer-events:none}
-
-    @media (prefers-reduced-motion:reduce){
-      .vouchers{transition:none; transform:none}
-    }
-    @media print{
-      body{background:#fff; color:#000}
-      .hero{display:none}
-      main{padding:0}
-      section{box-shadow:none; background:#fff}
-      .voucher{background:#fff; border:1px dashed #c00}
-      .redeemBtn{display:none}
-    }
+    .voucher{background:var(--card);border:1px dashed rgba(194,24,7,.55);border-radius:14px;padding:14px;min-height:150px;display:flex;flex-direction:column;gap:10px;}
+    .voucher-title{font-weight:800;text-transform:uppercase;letter-spacing:.3px}
+    .voucher-body{font-style:italic;text-transform:none;}
+    .voucher-body::first-letter{text-transform:uppercase;}
+    .voucher-meta{display:flex;align-items:center;justify-content:space-between;gap:8px}
+    .meta-right{font-size:12px;opacity:.9}
+    .redeemBtn{padding:6px 10px;border-radius:999px;border:1px solid rgba(194,24,7,.35);background:rgba(194,24,7,.08);color:var(--ink);cursor:pointer;font-size:12px}
+    .voucher[data-redeemed="true"]{opacity:.85;border-style:solid}
+    .date-badge{font-size:11px;padding:4px 8px;border-radius:999px;background:rgba(194,24,7,.08);border:1px solid rgba(194,24,7,.25)}
+    @media print{body{background:#fff;color:#000}.hero{display:none}.voucher{background:#fff;border:1px dashed #c00}.redeemBtn{display:none}}
   </style>
 </head>
 <body>
@@ -124,14 +56,17 @@
     <div class="hero-inner">
       <h1>TANTI AUGURI AMORE MIO ❤️</h1>
       <p class="subtitle">A special gift just for you</p>
-
       <div class="cta">
-        <small>clicca per spacchettare il tuo regalo</small>
+        <small>CLICCA PER SPACCHETTARE IL TUO REGALO</small>
         <button id="openGift" class="gift-btn" aria-controls="vouchers" aria-expanded="false">
-          <span class="lid"></span>
-          <span class="box"></span>
-          <span class="bow" aria-hidden="true"></span>
-          <span class="sr-only">Apri il tuo regalo</span>
+          <!-- Pacchetto realistico SVG -->
+          <svg viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+            <rect x="20" y="40" width="88" height="68" rx="6" fill="#C21807" stroke="#9B1505" stroke-width="2"/>
+            <rect x="16" y="28" width="96" height="26" rx="6" fill="#E64747" stroke="#9B1505" stroke-width="2"/>
+            <rect x="58" y="28" width="12" height="80" rx="2" fill="#FFD2D2"/>
+            <rect x="16" y="56" width="96" height="8" fill="#FFD2D2"/>
+            <circle cx="64" cy="22" r="10" fill="#FFD2D2" stroke="#9B1505" stroke-width="2"/>
+          </svg>
         </button>
       </div>
     </div>
@@ -139,101 +74,90 @@
   </header>
 
   <main>
-    <!-- LOVE VOUCHERS -->
     <section id="vouchers" class="vouchers" hidden>
       <div class="vouchers-header">
         <h2>LOVE VOUCHERS</h2>
-        <p><strong>Avvertenze:</strong> questi voucher potrebbero causare dipendenza affettiva e l'uso improprio potrebbe provocare effetti collaterali come eccesso di dolcezza e amore. Utilizzare con moderazione (forse). Scadenza: illimitata.</p>
+        <p><strong>Avvertenze:</strong> Questi voucher potrebbero causare dipendenza affettiva e l'uso improprio potrebbe provocare effetti collaterali come eccesso di dolcezza e amore. Utilizzare con moderazione (forse). Scadenza: illimitata.</p>
       </div>
 
-      <div class="grid" id="voucherGrid" aria-live="polite">
-        <!-- 1 -->
+      <div class="grid" id="voucherGrid">
         <article class="voucher" data-redeemed="false" data-idx="1">
           <header class="voucher-title">GRATTINI</header>
-          <p class="voucher-body">questo voucher dà diritto ad una sessione della durata di 30 minuti di grattini a scelta.</p>
+          <p class="voucher-body">Questo voucher dà diritto ad una sessione della durata di 30 minuti di grattini a scelta.</p>
           <div class="voucher-meta">
-            <button class="redeemBtn" type="button">Riscatta</button>
+            <button class="redeemBtn">Riscatta</button>
             <div class="meta-right"></div>
           </div>
         </article>
-        <!-- 2 -->
         <article class="voucher" data-redeemed="false" data-idx="2">
           <header class="voucher-title">MASSAGGIO RILASSANTE</header>
-          <p class="voucher-body">questo voucher dà diritto ad un massaggio rilassante completo della durata di 60 minuti.</p>
+          <p class="voucher-body">Questo voucher dà diritto ad un massaggio rilassante completo della durata di 60 minuti.</p>
           <div class="voucher-meta">
-            <button class="redeemBtn" type="button">Riscatta</button>
+            <button class="redeemBtn">Riscatta</button>
             <div class="meta-right"></div>
           </div>
         </article>
-        <!-- 3 -->
         <article class="voucher" data-redeemed="false" data-idx="3">
           <header class="voucher-title">SERATA FILM</header>
-          <p class="voucher-body">questo voucher ti da il diritto di scegliere un film che vuoi tu, con snack che desideri offerti o cena sul divano.</p>
+          <p class="voucher-body">Questo voucher ti dà il diritto di scegliere un film che vuoi tu, con snack che desideri offerti o cena sul divano.</p>
           <div class="voucher-meta">
-            <button class="redeemBtn" type="button">Riscatta</button>
+            <button class="redeemBtn">Riscatta</button>
             <div class="meta-right"></div>
           </div>
         </article>
-        <!-- 4 -->
         <article class="voucher" data-redeemed="false" data-idx="4">
           <header class="voucher-title">COMANDI TU</header>
-          <p class="voucher-body">per una giornata intera si farà tutto ciò che desideri, qualsiasi cosa.</p>
+          <p class="voucher-body">Per una giornata intera si farà tutto ciò che desideri, qualsiasi cosa.</p>
           <div class="voucher-meta">
-            <button class="redeemBtn" type="button">Riscatta</button>
+            <button class="redeemBtn">Riscatta</button>
             <div class="meta-right"></div>
           </div>
         </article>
-        <!-- 5 -->
         <article class="voucher" data-redeemed="false" data-idx="5">
           <header class="voucher-title">COLAZIONE A LETTO</header>
-          <p class="voucher-body">la tua colazione a scelta direttamente a letto, utilizzare il voucher con anticipo.</p>
+          <p class="voucher-body">La tua colazione a scelta direttamente a letto, utilizzare il voucher con anticipo.</p>
           <div class="voucher-meta">
-            <button class="redeemBtn" type="button">Riscatta</button>
+            <button class="redeemBtn">Riscatta</button>
             <div class="meta-right"></div>
           </div>
         </article>
-        <!-- 6 -->
         <article class="voucher" data-redeemed="false" data-idx="6">
           <header class="voucher-title">CHEF PERSONALE</header>
-          <p class="voucher-body">utilizzando questo voucher, il beneficiario potrà godere di una cena a scelta preparata dal partner che si dovrà occupare di tutto, dalla spesa alla pulizia della cucina.</p>
+          <p class="voucher-body">Utilizzando questo voucher, il beneficiario potrà godere di una cena a scelta preparata dal partner che si dovrà occupare di tutto, dalla spesa alla pulizia della cucina.</p>
           <div class="voucher-meta">
-            <button class="redeemBtn" type="button">Riscatta</button>
+            <button class="redeemBtn">Riscatta</button>
             <div class="meta-right"></div>
           </div>
         </article>
-        <!-- 7 -->
         <article class="voucher" data-redeemed="false" data-idx="7">
           <header class="voucher-title">FANTASIA PICCANTE</header>
-          <p class="voucher-body">questo buono dà il diritto alla realizzazione di qualsiasi fantasia da parte del partner.</p>
+          <p class="voucher-body">Questo buono dà il diritto alla realizzazione di qualsiasi fantasia da parte del partner.</p>
           <div class="voucher-meta">
-            <button class="redeemBtn" type="button">Riscatta</button>
+            <button class="redeemBtn">Riscatta</button>
             <div class="meta-right"></div>
           </div>
         </article>
-        <!-- 8 -->
         <article class="voucher" data-redeemed="false" data-idx="8">
           <header class="voucher-title">BOCCONOTTO NOW</header>
-        <p class="voucher-body">questo voucher dà il diritto a ricevere nell'immediato un bocconotto.</p>
+          <p class="voucher-body">Questo voucher dà il diritto a ricevere nell'immediato un bocconotto.</p>
           <div class="voucher-meta">
-            <button class="redeemBtn" type="button">Riscatta</button>
+            <button class="redeemBtn">Riscatta</button>
             <div class="meta-right"></div>
           </div>
         </article>
-        <!-- 9 -->
         <article class="voucher" data-redeemed="false" data-idx="9">
           <header class="voucher-title">GAME NIGHT</header>
-          <p class="voucher-body">serata game a scelta, che siano giochi da tavola, giochi online o bowling.</p>
+          <p class="voucher-body">Serata game a scelta, che siano giochi da tavola, giochi online o bowling.</p>
           <div class="voucher-meta">
-            <button class="redeemBtn" type="button">Riscatta</button>
+            <button class="redeemBtn">Riscatta</button>
             <div class="meta-right"></div>
           </div>
         </article>
-        <!-- 10 -->
         <article class="voucher" data-redeemed="false" data-idx="10">
           <header class="voucher-title">CINEMA</header>
-          <p class="voucher-body">questo buono dà il diritto di usufruire di una serata cinema con film a scelta, tutto offerto.</p>
+          <p class="voucher-body">Questo buono dà il diritto di usufruire di una serata cinema con film a scelta, tutto offerto.</p>
           <div class="voucher-meta">
-            <button class="redeemBtn" type="button">Riscatta</button>
+            <button class="redeemBtn">Riscatta</button>
             <div class="meta-right"></div>
           </div>
         </article>
@@ -244,102 +168,63 @@
   <script>
     // Apri regalo → mostra i vouchers
     (function(){
-      const btn = document.getElementById("openGift");
-      const sec = document.getElementById("vouchers");
-      btn.addEventListener("click", () => {
-        sec.hidden = false;
-        void sec.offsetHeight;    // trigger transizione
+      const btn=document.getElementById("openGift");
+      const sec=document.getElementById("vouchers");
+      btn.addEventListener("click",()=>{
+        sec.hidden=false;
+        void sec.offsetHeight;
         sec.classList.add("reveal");
         btn.setAttribute("aria-expanded","true");
-        sec.scrollIntoView({ behavior:"smooth" });
+        sec.scrollIntoView({behavior:"smooth"});
       });
     })();
 
-    // Utilità
     function todayIT(){
-      const d = new Date();
-      const dd = String(d.getDate()).padStart(2,"0");
-      const mm = String(d.getMonth()+1).padStart(2,"0");
-      const yyyy = d.getFullYear();
-      return `${dd}/${mm}/${yyyy}`;
+      const d=new Date();
+      return `${String(d.getDate()).padStart(2,"0")}/${String(d.getMonth()+1).padStart(2,"0")}/${d.getFullYear()}`;
     }
-
     function loadState(){
-      document.querySelectorAll(".voucher").forEach(v => {
-        const idx = v.dataset.idx;
-        const redeemed = localStorage.getItem(`voucher_${idx}_redeemed`) === "1";
-        const date = localStorage.getItem(`voucher_${idx}_date`) || "";
-        const btn = v.querySelector(".redeemBtn");
-        const metaRight = v.querySelector(".meta-right");
-        if (redeemed){
-          v.dataset.redeemed = "true";
-          btn.textContent = "Riscattato";
-          if (date) metaRight.innerHTML = `<span class="date-badge">Riscattato il: ${date}</span>`;
+      document.querySelectorAll(".voucher").forEach(v=>{
+        const idx=v.dataset.idx;
+        const redeemed=localStorage.getItem(`voucher_${idx}_redeemed`)==="1";
+        const date=localStorage.getItem(`voucher_${idx}_date`)||"";
+        const btn=v.querySelector(".redeemBtn");
+        const meta=v.querySelector(".meta-right");
+        if(redeemed){
+          v.dataset.redeemed="true";
+          btn.textContent="Riscattato";
+          if(date) meta.innerHTML=`<span class="date-badge">Riscattato il: ${date}</span>`;
         }
       });
     }
-
-    // Click su Riscatta → persiste + chiede data
-    document.addEventListener("click", (e) => {
-      if (!e.target.classList.contains("redeemBtn")) return;
-      const card = e.target.closest(".voucher");
-      const idx = card.dataset.idx;
-      const metaRight = card.querySelector(".meta-right");
-      const isRedeemed = card.dataset.redeemed === "true";
-
-      if (!isRedeemed){
-        // chiede data (default: oggi)
-        let date = prompt("Inserisci la data di riscatto (GG/MM/AAAA):", todayIT());
-        if (!date) return; // annullato
-        // validazione minima
-        if (!/^\d{2}\/\d{2}\/\d{4}$/.test(date)) {
-          alert("Formato non valido. Usa GG/MM/AAAA.");
-          return;
-        }
-        card.dataset.redeemed = "true";
-        e.target.textContent = "Riscattato";
-        localStorage.setItem(`voucher_${idx}_redeemed`, "1");
-        localStorage.setItem(`voucher_${idx}_date`, date);
-        metaRight.innerHTML = `<span class="date-badge">Riscattato il: ${date}</span>`;
-      } else {
-        // se vuoi permettere l'annullamento, scommenta qui sotto:
-        // card.dataset.redeemed = "false";
-        // e.target.textContent = "Riscatta";
-        // localStorage.removeItem(`voucher_${idx}_redeemed`);
-        // localStorage.removeItem(`voucher_${idx}_date`);
+    document.addEventListener("click",e=>{
+      if(!e.target.classList.contains("redeemBtn"))return;
+      const card=e.target.closest(".voucher");
+      const idx=card.dataset.idx;
+      const meta=card.querySelector(".meta-right");
+      const redeemed=card.dataset.redeemed==="true";
+      if(!redeemed){
+        let date=prompt("Inserisci la data di riscatto (GG/MM/AAAA):",todayIT());
+        if(!date)return;
+        if(!/\\d{2}\\/\\d{2}\\/\\d{4}/.test(date)){alert("Formato non valido.");return;}
+        card.dataset.redeemed="true";
+        e.target.textContent="Riscattato";
+        localStorage.setItem(`voucher_${idx}_redeemed`,"1");
+        localStorage.setItem(`voucher_${idx}_date`,date);
+        meta.innerHTML=`<span class="date-badge">Riscattato il: ${date}</span>`;
       }
     });
-
-    // Confetti leggero
     (function confetti(){
-      const canvas = document.getElementById("confetti");
-      const ctx = canvas.getContext("2d");
-      function resize(){
-        canvas.width = canvas.offsetWidth;
-        canvas.height = canvas.offsetHeight;
-      }
-      window.addEventListener("resize", resize); resize();
-      let pieces = Array.from({length: 120}, () => ({
-        x: Math.random()*canvas.width,
-        y: Math.random()*-canvas.height,
-        r: 4+Math.random()*6,
-        d: 1+Math.random()*2,
-        tilt: Math.random()*Math.PI
-      }));
-      (function draw(){
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-        for (const p of pieces){
-          ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.tilt);
-          ctx.fillStyle = Math.random()>.5 ? "#C21807" : "#E64747";
-          ctx.fillRect(-p.r/2,-p.r/2,p.r,p.r*.6); ctx.restore();
-          p.y += p.d; p.x += Math.sin(p.y/25)*.8; p.tilt += .02;
-          if (p.y > canvas.height+20) { p.y = -10; p.x = Math.random()*canvas.width; }
-        }
-        requestAnimationFrame(draw);
+      const c=document.getElementById("confetti"),x=c.getContext("2d");
+      function r(){c.width=c.offsetWidth;c.height=c.offsetHeight;}
+      window.addEventListener("resize",r);r();
+      let p=Array.from({length:120},()=>({x:Math.random()*c.width,y:Math.random()*-c.height,r:4+Math.random()*6,d:1+Math.random()*2,t:Math.random()*Math.PI}));
+      (function d(){
+        x.clearRect(0,0,c.width,c.height);
+        for(const o of p){x.save();x.translate(o.x,o.y);x.rotate(o.t);x.fillStyle=Math.random()>.5?"#C21807":"#E64747";x.fillRect(-o.r/2,-o.r/2,o.r,o.r*.6);x.restore();o.y+=o.d;o.x+=Math.sin(o.y/25)*.8;o.t+=.02;if(o.y>c.height+20){o.y=-10;o.x=Math.random()*c.width;}}
+        requestAnimationFrame(d);
       })();
     })();
-
-    // Init stato
     loadState();
   </script>
 </body>
