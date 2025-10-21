@@ -59,7 +59,17 @@
       section{box-shadow:none;background:#fff} .voucher{background:#fff;border:1px dashed #c00}
       .redeemBtn{display:none}
     }
-  </style>
+
+    /* Animazione coperchio regalo */
+.gift-btn .lid { 
+  transform-origin: 64px 40px;          /* perno circa al centro-top */
+  transition: transform .45s ease; 
+}
+.gift-btn.opened .lid {
+  transform: translateY(-20px) rotate(-8deg);
+}
+/* opzionale: leggero sobbalzo della scatola */
+.gift-btn.opened svg { transform: translateY(-2px); }  </style>
 </head>
 <body>
   <header class="hero">
