@@ -153,9 +153,29 @@
       <p class="subtitle">Un piccolo sito fatto apposta per te: auguri + voucher d'amore ❤️</p>
       <div class="cta-row">
         
-        <button class="btn primary" id="openGift" aria-controls="vouchers" aria-expanded="false">
+<button
+  class="btn primary"
+  id="openGift"
+  aria-controls="vouchers"
+  aria-expanded="false"
+  onclick="(function(){
+    var v = document.getElementById('vouchers');
+    var btn = document.getElementById('openGift');
+    if(!v) return;
+    // Mostra i voucher
+    v.hidden = false;
+    // Effetto di comparsa (se il CSS c’è, parte; se no forziamo comunque)
+    v.classList.add('reveal');
+    v.style.opacity = '1';
+    v.style.transform = 'none';
+    // Aggiorna stato accessibile
+    if(btn) btn.setAttribute('aria-expanded','true');
+    // Scorri fino ai voucher
+    v.scrollIntoView({behavior:'smooth'});
+  })();"
+>
   Apri il regalo
-</button>       
+</button>
         
         <button class="btn ghost" id="printVouchers">Stampa i voucher</button>
       </div>
