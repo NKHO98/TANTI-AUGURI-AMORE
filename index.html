@@ -357,5 +357,28 @@
 
     document.addEventListener("DOMContentLoaded", init);
   </script>
+
+  <script>
+  // Fix super-semplice per mostrare i voucher al click
+  window.addEventListener('DOMContentLoaded', function () {
+    const btn = document.getElementById('openGift');
+    const vouchers = document.getElementById('vouchers');
+
+    if (!btn || !vouchers) return;
+
+    btn.addEventListener('click', function () {
+      // 1) Mostra la sezione nascosta
+      vouchers.hidden = false;
+
+      // 2) Se per qualche motivo l’animazione non parte, forziamo visibilità
+      vouchers.classList.add('reveal');
+      vouchers.style.opacity = '1';
+      vouchers.style.transform = 'none';
+
+      // 3) Vai giù ai voucher
+      vouchers.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+</script>
 </body>
 </html>
