@@ -8,7 +8,7 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='0.9em' font-size='90'%3E%F0%9F%92%96%3C/text%3E%3C/svg%3E">
 
   <style>
-    /* Reset / theme */
+    /* Reset / tema */
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; }
     :root {
@@ -32,7 +32,7 @@
     .hint { display: block; margin-top: 10px; color: var(--muted); font-size: 12px; }
     #confetti { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; mix-blend-mode: screen; }
 
-    /* Buttons */
+    /* Bottoni */
     .btn { border: 0; border-radius: 999px; padding: 12px 18px; font-weight: 700; cursor: pointer; transition: transform .08s ease, box-shadow .2s ease, background .2s ease; box-shadow: var(--shadow); }
     .btn.primary { background: linear-gradient(45deg, var(--accent), var(--accent-2)); color: #0b0f1a; }
     .btn.ghost { background: transparent; color: var(--ink); outline: 1.5px solid rgba(255,255,255,.25); }
@@ -40,13 +40,13 @@
     .btn:active { transform: translateY(0) scale(.99); }
     .btn.tiny { padding: 6px 10px; font-size: 12px; }
 
-    /* Sections */
+    /* Sezioni */
     main { max-width: 1000px; margin: 0 auto; padding: 24px 16px 56px; }
     section { margin: 24px 0; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,.08); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); backdrop-filter: blur(8px); }
     section h2 { margin-top: 0; }
     .message p { font-size: 18px; }
 
-    /* Grid vouchers */
+    /* Griglia voucher */
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
     .voucher {
       background: linear-gradient(180deg, var(--card), #101429);
@@ -118,18 +118,101 @@
       </p>
     </section>
 
+    <!-- VOUCHERS STATICI (sempre pronti) -->
     <section id="vouchers" class="vouchers" hidden>
       <div class="vouchers-header">
         <h2>Voucher d'amore</h2>
         <p>Falli scorrere, clicca per “riscattare”, oppure stampali. Sono validi fino a esaurimento coccole!</p>
       </div>
-      <div id="voucherGrid" class="grid" aria-live="polite"></div>
+
+      <div id="voucherGrid" class="grid" aria-live="polite">
+        <article class="voucher" data-redeemed="false">
+          <header class="voucher-title">Colazione a letto</header>
+          <p class="voucher-body">Un vassoio pieno di coccole, cornetto e caffè come piace a te.</p>
+          <div class="voucher-meta">
+            <span class="tag">Amore</span>
+            <button class="btn tiny redeemBtn">Riscatta</button>
+          </div>
+        </article>
+
+        <article class="voucher" data-redeemed="false">
+          <header class="voucher-title">1 ora di massaggio</header>
+          <p class="voucher-body">Spalle, schiena, collo: rilassamento garantito.</p>
+          <div class="voucher-meta">
+            <span class="tag">Amore</span>
+            <button class="btn tiny redeemBtn">Riscatta</button>
+          </div>
+        </article>
+
+        <article class="voucher" data-redeemed="false">
+          <header class="voucher-title">Serata film a tua scelta</header>
+          <p class="voucher-body">Popcorn inclusi, niente interruzioni. Anche trilogie epiche.</p>
+          <div class="voucher-meta">
+            <span class="tag">Amore</span>
+            <button class="btn tiny redeemBtn">Riscatta</button>
+          </div>
+        </article>
+
+        <article class="voucher" data-redeemed="false">
+          <header class="voucher-title">Uscita senza pensieri</header>
+          <p class="voucher-body">Prenotazioni e itinerario li preparo io.</p>
+          <div class="voucher-meta">
+            <span class="tag">Amore</span>
+            <button class="btn tiny redeemBtn">Riscatta</button>
+          </div>
+        </article>
+
+        <article class="voucher" data-redeemed="false">
+          <header class="voucher-title">Bugfix casalingo</header>
+          <p class="voucher-body">Sistema qualunque “bug” di casa segnalato da te.</p>
+          <div class="voucher-meta">
+            <span class="tag">Amore</span>
+            <button class="btn tiny redeemBtn">Riscatta</button>
+          </div>
+        </article>
+
+        <article class="voucher" data-redeemed="false">
+          <header class="voucher-title">Cena cucinata da me</header>
+          <p class="voucher-body">Menù completo, dall’antipasto al dolce.</p>
+          <div class="voucher-meta">
+            <span class="tag">Amore</span>
+            <button class="btn tiny redeemBtn">Riscatta</button>
+          </div>
+        </article>
+
+        <article class="voucher" data-redeemed="false">
+          <header class="voucher-title">Passeggiata mano nella mano</header>
+          <p class="voucher-body">Al tramonto, al parco o dove vuoi.</p>
+          <div class="voucher-meta">
+            <span class="tag">Amore</span>
+            <button class="btn tiny redeemBtn">Riscatta</button>
+          </div>
+        </article>
+
+        <article class="voucher" data-redeemed="false">
+          <header class="voucher-title">Giornata offline</header>
+          <p class="voucher-body">Niente schermi, solo noi. Modalità aereo attiva.</p>
+          <div class="voucher-meta">
+            <span class="tag">Amore</span>
+            <button class="btn tiny redeemBtn">Riscatta</button>
+          </div>
+        </article>
+
+        <article class="voucher" data-redeemed="false">
+          <header class="voucher-title">Bacio a sorpresa</header>
+          <p class="voucher-body">Redeem immediato. Sempre valido. 😘</p>
+          <div class="voucher-meta">
+            <span class="tag">Amore</span>
+            <button class="btn tiny redeemBtn">Riscatta</button>
+          </div>
+        </article>
+      </div>
     </section>
 
     <section class="howto">
       <h2>Come personalizzare ✏️</h2>
       <ol>
-        <li>Modifica la costante <code>CONFIG</code> qui sotto (nome, colori, voucher).</li>
+        <li>Modifica i testi dentro i tag <code>.voucher-title</code> e <code>.voucher-body</code>.</li>
         <li>Ricarica la pagina dopo il commit su GitHub Pages.</li>
       </ol>
     </section>
@@ -140,120 +223,62 @@
   </footer>
 
   <script>
-    // Config
-    const CONFIG = {
-      name: "Amore",
-      headline: "Buon Compleanno, {name}! 🎂",
-      colors: { accent: "#ff7ac6", accent2: "#7ad6ff" },
-      vouchers: [
-        { title: "Colazione a letto", text: "Un vassoio pieno di coccole, cornetto e caffè come piace a te." },
-        { title: "1 ora di massaggio", text: "Spalle, schiena, collo: rilassamento garantito." },
-        { title: "Serata film a tua scelta", text: "Popcorn inclusi, niente interruzioni. Anche trilogie epiche." },
-        { title: "Uscita senza pensieri", text: "Prenotazioni e itinerario li preparo io." },
-        { title: "Bugfix casalingo", text: "Sistema qualunque ‘bug’ di casa segnalato da te." },
-        { title: "Cena cucinata da me", text: "Menù completo, dall’antipasto al dolce." },
-        { title: "Passeggiata mano nella mano", text: "Al tramonto, al parco o dove vuoi." },
-        { title: "Giornata offline", text: "Niente schermi, solo noi. Modalità aereo attiva." },
-        { title: "Bacio a sorpresa", text: "Redeem immediato. Sempre valido. 😘" }
-      ]
-    };
-
-    // Utils
-    const $ = (sel, ctx = document) => ctx.querySelector(sel);
-
-    function applyConfig() {
-      const h = CONFIG.headline.replace("{name}", CONFIG.name);
-      $("#headline").innerHTML = h;
-      $("#name").textContent = CONFIG.name;
-      $("#year").textContent = new Date().getFullYear();
+    // Config minima (headline, colori)
+    (function applyConfig(){
+      document.getElementById("year").textContent = new Date().getFullYear();
+      // se vuoi personalizzare il nome, cambia qui
+      document.getElementById("name").textContent = "Amore";
+      document.getElementById("headline").innerHTML = "Buon Compleanno, <span id=\"name\">Amore</span>! 🎂";
       const root = document.documentElement;
-      root.style.setProperty("--accent", CONFIG.colors.accent);
-      root.style.setProperty("--accent-2", CONFIG.colors.accent2);
-    }
+      root.style.setProperty("--accent", "#ff7ac6");
+      root.style.setProperty("--accent-2", "#7ad6ff");
+    })();
 
-    // Build vouchers (no <template>, robusto ovunque)
-    function buildVouchers() {
-      const grid = $("#voucherGrid");
-      const items = CONFIG.vouchers.map((v, idx) => `
-        <article class="voucher" data-redeemed="${localStorage.getItem('voucher_${idx}') === '1'}">
-          <header class="voucher-title">${v.title}</header>
-          <p class="voucher-body">${v.text}</p>
-          <div class="voucher-meta">
-            <span class="tag">Amore</span>
-            <button class="btn tiny redeemBtn">${localStorage.getItem('voucher_${idx}') === '1' ? 'Riscattato' : 'Riscatta'}</button>
-          </div>
-        </article>
-      `).join("");
-      grid.innerHTML = items;
+    // Riscatto (delegato)
+    document.addEventListener("click", function(e){
+      if (!e.target.classList.contains("redeemBtn")) return;
+      const card = e.target.closest(".voucher");
+      const redeemed = card.dataset.redeemed !== "true";
+      card.dataset.redeemed = redeemed ? "true" : "false";
+      e.target.textContent = redeemed ? "Riscattato" : "Riscatta";
+    });
 
-      // Bind redeem
-      grid.querySelectorAll(".voucher").forEach((card, idx) => {
-        const btn = card.querySelector(".redeemBtn");
-        btn.addEventListener("click", () => {
-          const redeemed = card.dataset.redeemed !== "true";
-          card.dataset.redeemed = redeemed ? "true" : "false";
-          btn.textContent = redeemed ? "Riscattato" : "Riscatta";
-          if (redeemed) localStorage.setItem(`voucher_${idx}`, "1");
-          else localStorage.removeItem(`voucher_${idx}`);
-        });
-      });
-    }
+    // Stampa
+    document.getElementById("printVouchers").addEventListener("click", () => window.print());
 
-    function setupPrint() {
-      $("#printVouchers").addEventListener("click", () => window.print());
-    }
-
-    // Confetti light
-    function confetti() {
+    // Confetti leggero
+    (function confetti(){
       const canvas = document.getElementById("confetti");
       const ctx = canvas.getContext("2d");
       let W, H, pieces = [];
-      function resize() {
-        W = canvas.width = canvas.offsetWidth;
-        H = canvas.height = canvas.offsetHeight;
-        pieces = Array.from({ length: 120 }, () => ({
-          x: Math.random() * W, y: Math.random() * -H,
-          r: 4 + Math.random() * 6, d: 1 + Math.random() * 2, tilt: Math.random() * Math.PI,
-        }));
+      function resize(){ W = canvas.width = canvas.offsetWidth; H = canvas.height = canvas.offsetHeight;
+        pieces = Array.from({ length: 120 }, () => ({ x: Math.random()*W, y: Math.random()*-H, r: 4+Math.random()*6, d: 1+Math.random()*2, tilt: Math.random()*Math.PI }));
       }
-      window.addEventListener("resize", resize);
-      resize();
-      (function draw(){
-        ctx.clearRect(0, 0, W, H);
-        for (const p of pieces) {
-          ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.tilt);
-          ctx.fillStyle = Math.random() > .5
+      window.addEventListener("resize", resize); resize();
+      (function draw(){ ctx.clearRect(0,0,W,H);
+        for (const p of pieces){ ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.tilt);
+          ctx.fillStyle = Math.random()>.5
             ? getComputedStyle(document.documentElement).getPropertyValue("--accent")
             : getComputedStyle(document.documentElement).getPropertyValue("--accent-2");
-          ctx.fillRect(-p.r/2, -p.r/2, p.r, p.r*.6);
-          ctx.restore();
-          p.y += p.d; p.x += Math.sin(p.y/25)*0.8; p.tilt += 0.02;
-          if (p.y > H + 20) { p.y = -10; p.x = Math.random() * W; }
-        }
-        requestAnimationFrame(draw);
+          ctx.fillRect(-p.r/2,-p.r/2,p.r,p.r*.6);
+          ctx.restore(); p.y+=p.d; p.x+=Math.sin(p.y/25)*.8; p.tilt+=.02;
+          if (p.y>H+20){ p.y=-10; p.x=Math.random()*W; }
+        } requestAnimationFrame(draw);
       })();
-    }
+    })();
 
-    function init() {
-      applyConfig();
-      setupPrint();
-      confetti();
+    // Apertura regalo: mostra la sezione con animazione
+    document.getElementById("openGift").addEventListener("click", () => {
+      const sec = document.getElementById("vouchers");
+      sec.hidden = false;
+      void sec.offsetHeight; // trigger transizione
+      sec.classList.add("reveal");
+      document.getElementById("openGift").setAttribute("aria-expanded","true");
+      sec.scrollIntoView({ behavior: "smooth" });
+    });
 
-      const btn = document.getElementById("openGift");
-      const vouchersSection = document.getElementById("vouchers");
-      let built = false;
-
-      btn.addEventListener("click", () => {
-        if (!built) { buildVouchers(); built = true; }
-        vouchersSection.hidden = false;
-        void vouchersSection.offsetHeight; // trigger transition
-        vouchersSection.classList.add("reveal");
-        btn.setAttribute("aria-expanded", "true");
-        vouchersSection.scrollIntoView({ behavior: "smooth" });
-      });
-    }
-
-    document.addEventListener("DOMContentLoaded", init);
+    // Anno footer
+    document.getElementById("year").textContent = new Date().getFullYear();
   </script>
 </body>
 </html>
