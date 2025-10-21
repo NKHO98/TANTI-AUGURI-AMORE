@@ -122,6 +122,28 @@
       .voucher-meta .redeemBtn { display: none; }
       .voucher-meta .tag { background: #eee; border-color: #ddd; color: #333; }
     }
+  /* --- Mostra/nascondi e animazione per i voucher --- */
+.vouchers[hidden] { display: none; }
+
+.vouchers {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity .32s ease, transform .32s ease;
+}
+.vouchers.reveal {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Se l'utente preferisce meno movimento, niente animazioni */
+@media (prefers-reduced-motion: reduce) {
+  .vouchers { transition: none; transform: none; }
+}
+
+/* In stampa i voucher devono vedersi sempre */
+@media print {
+  .vouchers[hidden] { display: block !important; opacity: 1 !important; transform: none !important; }
+}  
   </style>
 </head>
 <body>
@@ -130,7 +152,11 @@
       <h1 id="headline">Buon Compleanno, <span id="name">Amore</span>! 🎂</h1>
       <p class="subtitle">Un piccolo sito fatto apposta per te: auguri + voucher d'amore ❤️</p>
       <div class="cta-row">
-        <button class="btn primary" id="openGift">Apri il regalo</button>
+        
+        <button class="btn primary" id="openGift" aria-controls="vouchers" aria-expanded="false">
+  Apri il regalo
+</button>       
+        
         <button class="btn ghost" id="printVouchers">Stampa i voucher</button>
       </div>
       <small class="hint">Tutto fatto con amore, senza librerie esterne.</small>
@@ -149,7 +175,7 @@
       </p>
     </section>
 
-    <section class="vouchers">
+    <section id="vouchers" class="vouchers" hidden>      
       <div class="vouchers-header">
         <h2>Voucher d'amore</h2>
         <p>Falli scorrere, clicca per “riscattare”, oppure stampali. Sono validi fino a esaurimento coccole!</p>
