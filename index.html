@@ -17,7 +17,6 @@
     #confetti{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
     .cta{display:grid;justify-items:center;gap:12px;margin-top:18px}
     .cta small{font-size:13px;opacity:.9;text-transform:uppercase;letter-spacing:.5px}
-    /* Bottone immagine (niente SVG) */
     .gift-btn{
       border:0;background:transparent;cursor:pointer;
       width:clamp(140px,22vw,200px);aspect-ratio:1/1;border-radius:12px;
@@ -50,18 +49,10 @@
 
     <div class="cta">
       <small>CLICCA PER SPACCHETTARE IL TUO REGALO</small>
-
-      <!-- SOLO IMMAGINE (trasparente) -->
       <button id="openGift" class="gift-btn" aria-controls="vouchers" aria-expanded="false" aria-label="Apri il regalo">
-        <img
-          src="https://pngimg.com/uploads/gift/gift_PNG100465.png?v=5"
-          alt="Pacchetto regalo"
-          loading="eager" decoding="async"
-          onerror="this.onerror=null;this.src='https://pngimg.com/uploads/gift/gift_PNG100448.png?v=5';"
-        >
+        <img src="https://pngimg.com/uploads/gift/gift_PNG100465.png?v=7" alt="Pacchetto regalo">
       </button>
     </div>
-
     <canvas id="confetti"></canvas>
   </header>
 
@@ -71,7 +62,6 @@
         <h2>LOVE VOUCHERS</h2>
         <p><strong>Avvertenze:</strong> Questi voucher potrebbero causare dipendenza affettiva e dolcezza eccessiva. Scadenza: illimitata.</p>
       </div>
-
       <div class="grid" id="voucherGrid">
         <article class="voucher" data-idx="1"><h3 class="voucher-title">GRATTINI</h3><p class="voucher-body">Sessione di 30 minuti di grattini a scelta.</p><div class="voucher-meta"><button class="redeemBtn">Riscatta</button><div class="meta-right"></div></div></article>
         <article class="voucher" data-idx="2"><h3 class="voucher-title">MASSAGGIO RILASSANTE</h3><p class="voucher-body">Massaggio rilassante completo della durata di 60 minuti.</p><div class="voucher-meta"><button class="redeemBtn">Riscatta</button><div class="meta-right"></div></div></article>
@@ -99,7 +89,9 @@
       document.getElementById("openGift").setAttribute("aria-expanded","true");
       sec.scrollIntoView({behavior:"smooth",block:"start"});
       burstConfetti();
+      playMelody();   // musichetta dolce
     }
+
     document.addEventListener("DOMContentLoaded",()=>{
       document.getElementById("openGift").addEventListener("click",openGift);
       loadState();
@@ -178,6 +170,38 @@
       if(!confettiCanvas)return;
       for(let i=0;i<60;i++) confettiPieces.push(spawnPiece(false));
       if(confettiPieces.length>240) confettiPieces=confettiPieces.slice(-240);
+    }
+
+    /* Music box – arpeggio dolce al click */
+    let audioCtx=null;
+    function ensureAudioCtx(){
+      if(!audioCtx){
+        const AC=window.AudioContext||window.webkitAudioContext;
+        audioCtx=new AC();
+      }
+      if(audioCtx.state==="suspended") audioCtx.resume();
+    }
+    function playMelody(){
+      ensureAudioCtx();
+      const now=audioCtx.currentTime;
+      const notes=[523.25,659.25,783.99,1046.50,null,659.25,783.99,1046.50]; // C5 E5 G5 C6 ...
+      const dur=0.18, gap=0.04;
+      const master=audioCtx.createGain();
+      master.gain.value=0.14;
+      master.connect(audioCtx.destination);
+      notes.forEach((f,i)=>{
+        const t0=now+i*(dur+gap);
+        if(!f) return;
+        const osc=audioCtx.createOscillator();
+        const g=audioCtx.createGain();
+        osc.type="triangle";
+        osc.frequency.value=f;
+        g.gain.setValueAtTime(0.0001,t0);
+        g.gain.exponentialRampToValueAtTime(0.9,t0+0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001,t0+dur);
+        osc.connect(g); g.connect(master);
+        osc.start(t0); osc.stop(t0+dur+0.02);
+      });
     }
   </script>
 </body>
