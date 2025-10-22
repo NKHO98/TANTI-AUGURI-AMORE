@@ -61,34 +61,6 @@
       .redeemBtn{display:none}
     }
 
-    /* --- Cute add-ons (stickers + sigillo + fiocco che respira) --- */
-    /* Sticker leggero nell’angolo (effetto adesivo traslucido) */
-    .voucher::after{
-      content:"";
-      position:absolute; right:8px; top:-6px;
-      width:48px; height:48px;
-      background:
-        radial-gradient(circle at 30% 30%, rgba(255,255,255,.7) 0 12px, transparent 13px),
-        radial-gradient(circle, rgba(226,49,49,.9) 0 65%, rgba(0,0,0,.08) 66% 68%, transparent 69%);
-      border-radius:50%;
-      transform:rotate(12deg);
-      opacity:.18;
-      pointer-events:none;
-    }
-    /* Sigillo di cera (appare sui riscattati) */
-    .stamp{
-      position:absolute; inset:auto auto 8px 8px;
-      width:86px; height:86px;
-      opacity:0;
-      transform:rotate(-8deg) scale(.8);
-      transition:transform .35s ease, opacity .35s ease;
-      pointer-events:none;
-      filter:drop-shadow(0 2px 3px rgba(0,0,0,.15));
-    }
-    .voucher[data-redeemed="true"] .stamp{
-      opacity:.92;
-      transform:rotate(-8deg) scale(1);
-    }
     /* Fiocco che “respira” (delicatissimo) */
     #bow{ transform-box: fill-box; transform-origin: center }
     @media (prefers-reduced-motion: no-preference){
@@ -108,7 +80,7 @@
 
         <!-- Bottone pacchetto -->
         <button id="openGift" class="gift-btn" aria-controls="vouchers" aria-expanded="false" aria-label="Apri il regalo e mostra i voucher" onclick="window.openGift && window.openGift()">
-          <!-- Pacchetto con fiocco più realistico -->
+          <!-- Pacchetto con fiocco realistico (fiocco riposizionato per non essere tagliato) -->
           <svg viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img">
             <!-- ombra -->
             <ellipse cx="64" cy="115" rx="38" ry="8" fill="rgba(0,0,0,.10)"/>
@@ -122,8 +94,8 @@
             <rect x="60" y="32" width="8" height="78" rx="2" fill="#FFD2D2"/>
             <rect x="16" y="58" width="96" height="8" rx="2" fill="#FFD2D2"/>
 
-            <!-- FIOCCO REALISTICO (id="bow" per animazione) -->
-            <g id="bow" transform="translate(64 30)">
+            <!-- FIOCCO (spostato al centro e più in basso per evitare clipping) -->
+            <g id="bow" transform="translate(64 46)">
               <g filter="url(#dropShadow)">
                 <!-- loop sinistro -->
                 <path d="M -32,-2
@@ -179,7 +151,8 @@
                 <stop offset="0" stop-color="#FFD2D2"/>
                 <stop offset="1" stop-color="#E88E8E"/>
               </linearGradient>
-              <filter id="dropShadow" x="-100" y="-60" width="200" height="160" color-interpolation-filters="sRGB">
+              <!-- filtro ombra del fiocco con regione ampia per evitare tagli -->
+              <filter id="dropShadow" x="-200%" y="-200%" width="400%" height="400%" color-interpolation-filters="sRGB">
                 <feDropShadow dx="0" dy="1.2" stdDeviation="1.5" flood-color="rgba(0,0,0,.25)"/>
               </filter>
             </defs>
@@ -345,46 +318,6 @@
       return dt.getFullYear()===yyyy&&dt.getMonth()===(mm-1)&&dt.getDate()===dd;
     }
 
-    /* ==== Cute: Sigillo di cera ==== */
-    function createStampEl(){
-      const wrap = document.createElement("div");
-      wrap.className = "stamp";
-      wrap.innerHTML = `
-        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <defs>
-            <radialGradient id="wax" cx="50%" cy="45%">
-              <stop offset="0%" stop-color="#FFCCCC"/>
-              <stop offset="65%" stop-color="#E64848"/>
-              <stop offset="100%" stop-color="#C21807"/>
-            </radialGradient>
-          </defs>
-          <path d="M50 6
-                   C68 6, 92 16, 94 34
-                   C96 52, 84 70, 66 74
-                   C48 78, 26 74, 16 60
-                   C6 46, 10 26, 26 16
-                   C36 10, 44 6, 50 6 Z"
-                fill="url(#wax)" />
-          <path d="M50 62
-                   C45 56, 34 49, 34 39
-                   C34 33, 39 28, 45 28
-                   C48 28, 51 30, 50 33
-                   C49 30, 52 28, 55 28
-                   C61 28, 66 33, 66 39
-                   C66 49, 55 56, 50 62 Z"
-                fill="#FFF" opacity=".95"/>
-          <text x="50" y="79" font-size="12" font-weight="700" text-anchor="middle"
-                fill="rgba(255,255,255,.95)" style="letter-spacing:1px">LOVE</text>
-        </svg>
-      `;
-      return wrap;
-    }
-    function ensureStamp(card){
-      if(!card.querySelector(".stamp")){
-        card.appendChild(createStampEl());
-      }
-    }
-
     /* ==== Stato vouchers ==== */
     function loadState(){
       document.querySelectorAll(".voucher").forEach(v=>{
@@ -397,7 +330,6 @@
           v.dataset.redeemed="true";
           if(btn) btn.textContent="Riscattato";
           if(date) meta.innerHTML=`<span class="date-badge">Riscattato il: ${date}</span>`;
-          ensureStamp(v); // mostra sigillo anche al reload
         }
       });
     }
@@ -418,7 +350,6 @@
         localStorage.setItem(`voucher_${idx}_redeemed`,"1");
         localStorage.setItem(`voucher_${idx}_date`,date);
         meta.innerHTML=`<span class="date-badge">Riscattato il: ${date}</span>`;
-        ensureStamp(card); // aggiungi sigillo al momento del riscatto
       }
     });
 
