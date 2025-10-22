@@ -29,9 +29,10 @@
     /* CTA */
     .cta{display:grid;justify-items:center;gap:12px;margin-top:18px}
     .cta small{font-size:13px;opacity:.9;text-transform:uppercase;letter-spacing:.5px}
-    .gift-btn{margin-top:24px;border:0;background:transparent;cursor:pointer;width:140px;height:140px;position:relative}
+    .gift-btn{margin-top:24px;border:0;background:transparent;cursor:pointer;width:160px;height:160px;position:relative}
     .gift-btn svg{width:100%;height:100%;transition:transform .25s ease}
     .gift-btn:hover svg{transform:translateY(-3px)}
+    .gift-btn:focus-visible{outline:3px solid #E64747;outline-offset:6px;border-radius:12px}
 
     /* Sections / vouchers */
     main{max-width:1000px;margin:0 auto;padding:24px 16px 56px}
@@ -43,7 +44,7 @@
     .vouchers-header p{margin:6px auto 16px;font-size:14px;max-width:800px;text-align:center}
 
     .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
-    .voucher{background:var(--card);border:1px dashed rgba(194,24,7,.55);border-radius:14px;padding:14px;min-height:150px;display:flex;flex-direction:column;gap:10px}
+    .voucher{background:var(--card);border:1px dashed rgba(194,24,7,.55);border-radius:14px;padding:14px;min-height:150px;display:flex;flex-direction:column;gap:10px;position:relative}
     .voucher-title{font-weight:800;text-transform:uppercase;letter-spacing:.3px;margin:0}
     .voucher-body{font-style:italic;margin:0}
     .voucher-body::first-letter{text-transform:uppercase}
@@ -60,7 +61,41 @@
       .redeemBtn{display:none}
     }
 
-     </style>
+    /* --- Cute add-ons (stickers + sigillo + fiocco che respira) --- */
+    /* Sticker leggero nell’angolo (effetto adesivo traslucido) */
+    .voucher::after{
+      content:"";
+      position:absolute; right:8px; top:-6px;
+      width:48px; height:48px;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,.7) 0 12px, transparent 13px),
+        radial-gradient(circle, rgba(226,49,49,.9) 0 65%, rgba(0,0,0,.08) 66% 68%, transparent 69%);
+      border-radius:50%;
+      transform:rotate(12deg);
+      opacity:.18;
+      pointer-events:none;
+    }
+    /* Sigillo di cera (appare sui riscattati) */
+    .stamp{
+      position:absolute; inset:auto auto 8px 8px;
+      width:86px; height:86px;
+      opacity:0;
+      transform:rotate(-8deg) scale(.8);
+      transition:transform .35s ease, opacity .35s ease;
+      pointer-events:none;
+      filter:drop-shadow(0 2px 3px rgba(0,0,0,.15));
+    }
+    .voucher[data-redeemed="true"] .stamp{
+      opacity:.92;
+      transform:rotate(-8deg) scale(1);
+    }
+    /* Fiocco che “respira” (delicatissimo) */
+    #bow{ transform-box: fill-box; transform-origin: center }
+    @media (prefers-reduced-motion: no-preference){
+      @keyframes bowBreathe{ 0%,100%{ transform: scale(1) } 50%{ transform: scale(1.06) } }
+      #bow{ animation: bowBreathe 2600ms ease-in-out infinite }
+    }
+  </style>
 </head>
 <body>
   <header class="hero">
@@ -71,12 +106,12 @@
       <div class="cta">
         <small>CLICCA PER SPACCHETTARE IL TUO REGALO</small>
 
-        <!-- Bottone pacchetto: onclick inline + id per fallback -->
-        <button id="openGift" class="gift-btn" aria-controls="vouchers" aria-expanded="false" onclick="window.openGift && window.openGift()">
-          <!-- Pacchetto realistico SVG con FIOCCO -->
+        <!-- Bottone pacchetto -->
+        <button id="openGift" class="gift-btn" aria-controls="vouchers" aria-expanded="false" aria-label="Apri il regalo e mostra i voucher" onclick="window.openGift && window.openGift()">
+          <!-- Pacchetto con fiocco più realistico -->
           <svg viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img">
             <!-- ombra -->
-            <ellipse cx="64" cy="114" rx="38" ry="8" fill="rgba(0,0,0,.10)"/>
+            <ellipse cx="64" cy="115" rx="38" ry="8" fill="rgba(0,0,0,.10)"/>
             <!-- scatola -->
             <rect x="20" y="46" width="88" height="64" rx="8" fill="#C21807"/>
             <rect x="20" y="46" width="88" height="64" rx="8" fill="url(#g1)" opacity=".15"/>
@@ -86,19 +121,36 @@
             <!-- nastri -->
             <rect x="60" y="32" width="8" height="78" rx="2" fill="#FFD2D2"/>
             <rect x="16" y="58" width="96" height="8" rx="2" fill="#FFD2D2"/>
-            <!-- fiocco centrale + anelli -->
-            <g transform="translate(64 30)">
-              <!-- anelli fiocco -->
-              <path d="M-24,0 C-40,-18 -14,-24 -10,-6 C-8,2 -14,8 -22,6 Z" fill="#FFD2D2"/>
-              <path d="M24,0 C40,-18 14,-24 10,-6 C8,2 14,8 22,6 Z" fill="#FFD2D2"/>
-              <!-- nodo -->
-              <circle cx="0" cy="6" r="5" fill="#FFD2D2" stroke="#9B1505" stroke-width="1.2"/>
-              <!-- codine -->
-              <path d="M-2,10 L-8,20" stroke="#FFD2D2" stroke-width="3" stroke-linecap="round"/>
-              <path d="M2,10 L8,20" stroke="#FFD2D2" stroke-width="3" stroke-linecap="round"/>
+
+            <!-- FIOCCO REALISTICO (id="bow" per animazione) -->
+            <g id="bow" transform="translate(64 30)">
+              <g filter="url(#dropShadow)">
+                <!-- loop sinistro -->
+                <path d="M -32,-2
+                         C -52,-20 -28,-30 -14,-16
+                         C  -6,-8  -8, 6 -20,10
+                         C -27,12 -30,6 -32,-2 Z"
+                      fill="url(#bowGradL)" stroke="#A81808" stroke-width="0.8"/>
+                <!-- loop destro -->
+                <path d="M 32,-2
+                         C 52,-20 28,-30 14,-16
+                         C  6,-8   8, 6 20,10
+                         C 27,12  30,6 32,-2 Z"
+                      fill="url(#bowGradR)" stroke="#A81808" stroke-width="0.8"/>
+                <!-- nodo centrale -->
+                <ellipse cx="0" cy="6" rx="7.5" ry="6.5" fill="url(#knotGrad)" stroke="#8F1406" stroke-width="1"/>
+                <!-- codine -->
+                <path d="M -3,11 L -10,26 L -2,22" fill="url(#tailGrad)" stroke="#991406" stroke-width="0.6"/>
+                <path d="M  3,11 L  10,26 L  2,22" fill="url(#tailGrad)" stroke="#991406" stroke-width="0.6"/>
+                <!-- highlights sottili -->
+                <path d="M -26,-8 C -36,-16 -20,-20 -12,-14" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1.2" stroke-linecap="round"/>
+                <path d="M  26,-8 C  36,-16  20,-20  12,-14" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1.2" stroke-linecap="round"/>
+              </g>
             </g>
-            <!-- gradienti -->
+
+            <!-- gradienti e filtri -->
             <defs>
+              <!-- luci scatola -->
               <linearGradient id="g1" x1="0" y1="46" x2="0" y2="110">
                 <stop offset="0" stop-color="#fff" stop-opacity=".6"/>
                 <stop offset="1" stop-color="#000" stop-opacity="0"/>
@@ -107,6 +159,29 @@
                 <stop offset="0" stop-color="#fff" stop-opacity=".5"/>
                 <stop offset="1" stop-color="#000" stop-opacity="0"/>
               </linearGradient>
+              <!-- fiocco -->
+              <linearGradient id="bowGradL" x1="-40" y1="-24" x2="0" y2="14" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#FFD7D7"/>
+                <stop offset=".5" stop-color="#FFC1C1"/>
+                <stop offset="1" stop-color="#E88E8E"/>
+              </linearGradient>
+              <linearGradient id="bowGradR" x1="40" y1="-24" x2="0" y2="14" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#FFD7D7"/>
+                <stop offset=".5" stop-color="#FFC1C1"/>
+                <stop offset="1" stop-color="#E88E8E"/>
+              </linearGradient>
+              <radialGradient id="knotGrad" cx="0" cy="6" r="10" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#FFE4E4"/>
+                <stop offset=".7" stop-color="#FFC5C5"/>
+                <stop offset="1" stop-color="#E69292"/>
+              </radialGradient>
+              <linearGradient id="tailGrad" x1="0" y1="10" x2="0" y2="28" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#FFD2D2"/>
+                <stop offset="1" stop-color="#E88E8E"/>
+              </linearGradient>
+              <filter id="dropShadow" x="-100" y="-60" width="200" height="160" color-interpolation-filters="sRGB">
+                <feDropShadow dx="0" dy="1.2" stdDeviation="1.5" flood-color="rgba(0,0,0,.25)"/>
+              </filter>
             </defs>
           </svg>
         </button>
@@ -204,6 +279,32 @@
             <div class="meta-right"></div>
           </div>
         </article>
+
+        <!-- NUOVI VOUCHER -->
+        <article class="voucher" data-redeemed="false" data-idx="11">
+          <header class="voucher-title">GELATINO</header>
+          <p class="voucher-body">Questo voucher permette di farsi prendere un gelato a scelta in qualsiasi momento.</p>
+          <div class="voucher-meta">
+            <button class="redeemBtn" type="button">Riscatta</button>
+            <div class="meta-right"></div>
+          </div>
+        </article>
+        <article class="voucher" data-redeemed="false" data-idx="12">
+          <header class="voucher-title">BOOK LOVER</header>
+          <p class="voucher-body">Questo voucher dà la possibilità di ricevere un libro a scelta in regalo.</p>
+          <div class="voucher-meta">
+            <button class="redeemBtn" type="button">Riscatta</button>
+            <div class="meta-right"></div>
+          </div>
+        </article>
+        <article class="voucher" data-redeemed="false" data-idx="13">
+          <header class="voucher-title">CIOCCOLATINO</header>
+          <p class="voucher-body">Questo voucher è utilizzabile per farsi prendere un cioccolatino a scelta in qualsiasi momento.</p>
+          <div class="voucher-meta">
+            <button class="redeemBtn" type="button">Riscatta</button>
+            <div class="meta-right"></div>
+          </div>
+        </article>
       </div>
     </section>
   </main>
@@ -219,7 +320,7 @@
         sec.classList.add("reveal");
         const btn=document.getElementById("openGift");
         if(btn) btn.setAttribute("aria-expanded","true");
-        sec.scrollIntoView({behavior:"smooth"});
+        sec.scrollIntoView({behavior:"smooth", block:"start"});
         burstConfetti(); // esplosione extra
       }catch(e){ console.error(e); }
     }
@@ -229,6 +330,7 @@
       if(btn) btn.addEventListener("click", openGift);
       loadState();
       startConfetti(); // confetti leggeri sempre attivi
+      window.openGift = openGift; // esponi per inline onclick
     });
 
     /* ==== Utilità data ==== */
@@ -243,6 +345,46 @@
       return dt.getFullYear()===yyyy&&dt.getMonth()===(mm-1)&&dt.getDate()===dd;
     }
 
+    /* ==== Cute: Sigillo di cera ==== */
+    function createStampEl(){
+      const wrap = document.createElement("div");
+      wrap.className = "stamp";
+      wrap.innerHTML = `
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <radialGradient id="wax" cx="50%" cy="45%">
+              <stop offset="0%" stop-color="#FFCCCC"/>
+              <stop offset="65%" stop-color="#E64848"/>
+              <stop offset="100%" stop-color="#C21807"/>
+            </radialGradient>
+          </defs>
+          <path d="M50 6
+                   C68 6, 92 16, 94 34
+                   C96 52, 84 70, 66 74
+                   C48 78, 26 74, 16 60
+                   C6 46, 10 26, 26 16
+                   C36 10, 44 6, 50 6 Z"
+                fill="url(#wax)" />
+          <path d="M50 62
+                   C45 56, 34 49, 34 39
+                   C34 33, 39 28, 45 28
+                   C48 28, 51 30, 50 33
+                   C49 30, 52 28, 55 28
+                   C61 28, 66 33, 66 39
+                   C66 49, 55 56, 50 62 Z"
+                fill="#FFF" opacity=".95"/>
+          <text x="50" y="79" font-size="12" font-weight="700" text-anchor="middle"
+                fill="rgba(255,255,255,.95)" style="letter-spacing:1px">LOVE</text>
+        </svg>
+      `;
+      return wrap;
+    }
+    function ensureStamp(card){
+      if(!card.querySelector(".stamp")){
+        card.appendChild(createStampEl());
+      }
+    }
+
     /* ==== Stato vouchers ==== */
     function loadState(){
       document.querySelectorAll(".voucher").forEach(v=>{
@@ -255,13 +397,15 @@
           v.dataset.redeemed="true";
           if(btn) btn.textContent="Riscattato";
           if(date) meta.innerHTML=`<span class="date-badge">Riscattato il: ${date}</span>`;
+          ensureStamp(v); // mostra sigillo anche al reload
         }
       });
     }
 
     document.addEventListener("click",(e)=>{
-      if(!e.target.classList.contains("redeemBtn")) return;
-      const card=e.target.closest(".voucher");
+      const t=e.target;
+      if(!(t && t.classList && t.classList.contains("redeemBtn"))) return;
+      const card=t.closest(".voucher");
       const idx=card.dataset.idx;
       const meta=card.querySelector(".meta-right");
       const already=card.dataset.redeemed==="true";
@@ -270,10 +414,11 @@
         if(!date) return;
         if(!isValidITDate(date)){ alert("Formato non valido. Usa GG/MM/AAAA."); return; }
         card.dataset.redeemed="true";
-        e.target.textContent="Riscattato";
+        t.textContent="Riscattato";
         localStorage.setItem(`voucher_${idx}_redeemed`,"1");
         localStorage.setItem(`voucher_${idx}_date`,date);
         meta.innerHTML=`<span class="date-badge">Riscattato il: ${date}</span>`;
+        ensureStamp(card); // aggiungi sigillo al momento del riscatto
       }
     });
 
