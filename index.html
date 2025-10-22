@@ -81,7 +81,7 @@
   </main>
 
   <script>
-    /* Apertura regalo */
+    /* ===== Apertura regalo ===== */
     function openGift(){
       const sec=document.getElementById("vouchers");
       sec.hidden=false; void sec.offsetHeight;
@@ -89,7 +89,7 @@
       document.getElementById("openGift").setAttribute("aria-expanded","true");
       sec.scrollIntoView({behavior:"smooth",block:"start"});
       burstConfetti();
-      playMelody();   // musichetta dolce
+      playMelody();   // musica al click
     }
 
     document.addEventListener("DOMContentLoaded",()=>{
@@ -98,7 +98,7 @@
       startConfetti();
     });
 
-    /* Utilità data */
+    /* ===== Utilità data ===== */
     function todayIT(){const d=new Date();return `${String(d.getDate()).padStart(2,"0")}/${String(d.getMonth()+1).padStart(2,"0")}/${d.getFullYear()}`}
     function isValidITDate(str){
       if(!/^\d{2}\/\d{2}\/\d{4}$/.test(str))return false;
@@ -107,7 +107,7 @@
       return dt.getFullYear()===yyyy&&dt.getMonth()===mm-1&&dt.getDate()===dd;
     }
 
-    /* Stato vouchers */
+    /* ===== Stato vouchers ===== */
     function loadState(){
       document.querySelectorAll(".voucher").forEach(v=>{
         const idx=v.dataset.idx;
@@ -139,7 +139,7 @@
       meta.innerHTML=`<span class="date-badge">Riscattato il: ${date}</span>`;
     });
 
-    /* Confetti */
+    /* ===== Confetti ===== */
     let confettiCanvas, ctx, confettiPieces=[];
     function startConfetti(){
       confettiCanvas=document.getElementById("confetti");
@@ -172,35 +172,63 @@
       if(confettiPieces.length>240) confettiPieces=confettiPieces.slice(-240);
     }
 
-    /* Music box – arpeggio dolce al click */
-    let audioCtx=null;
-    function ensureAudioCtx(){
+    /* ===== Audio: sblocco + melodia ===== */
+    let audioCtx=null, masterGain=null;
+
+    // Sblocca l'audio al PRIMO gesto dell'utente (necessario su iOS/Safari)
+    function unlockAudioOnce(){
+      initAudio();
+      // micro-blip (quasi impercettibile) per sbloccare l'audio
+      const t=audioCtx.currentTime;
+      const osc=audioCtx.createOscillator();
+      const g=audioCtx.createGain();
+      osc.type="sine"; osc.frequency.value=880;
+      g.gain.setValueAtTime(0.0001,t);
+      g.gain.exponentialRampToValueAtTime(0.35,t+0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+0.12);
+      osc.connect(g); g.connect(masterGain);
+      osc.start(t); osc.stop(t+0.15);
+      document.removeEventListener("pointerdown", unlockAudioOnce);
+      document.removeEventListener("keydown", unlockAudioOnce);
+      document.removeEventListener("touchstart", unlockAudioOnce);
+    }
+    document.addEventListener("pointerdown", unlockAudioOnce, {once:true});
+    document.addEventListener("keydown", unlockAudioOnce, {once:true});
+    document.addEventListener("touchstart", unlockAudioOnce, {once:true, passive:true});
+
+    function initAudio(){
       if(!audioCtx){
         const AC=window.AudioContext||window.webkitAudioContext;
+        if(!AC) return;
         audioCtx=new AC();
+        masterGain=audioCtx.createGain();
+        masterGain.gain.value=0.22; // volume generale più udibile su mobile
+        masterGain.connect(audioCtx.destination);
       }
       if(audioCtx.state==="suspended") audioCtx.resume();
     }
+
     function playMelody(){
-      ensureAudioCtx();
+      initAudio();
+      if(!audioCtx) return;
       const now=audioCtx.currentTime;
       const notes=[523.25,659.25,783.99,1046.50,null,659.25,783.99,1046.50]; // C5 E5 G5 C6 ...
-      const dur=0.18, gap=0.04;
-      const master=audioCtx.createGain();
-      master.gain.value=0.14;
-      master.connect(audioCtx.destination);
+      const dur=0.2, gap=0.05;
+
       notes.forEach((f,i)=>{
         const t0=now+i*(dur+gap);
         if(!f) return;
         const osc=audioCtx.createOscillator();
         const g=audioCtx.createGain();
-        osc.type="triangle";
+        osc.type="sine"; // più evidente del triangle su speaker piccoli
         osc.frequency.value=f;
+
         g.gain.setValueAtTime(0.0001,t0);
-        g.gain.exponentialRampToValueAtTime(0.9,t0+0.02);
+        g.gain.exponentialRampToValueAtTime(0.9,t0+0.03);
         g.gain.exponentialRampToValueAtTime(0.0001,t0+dur);
-        osc.connect(g); g.connect(master);
-        osc.start(t0); osc.stop(t0+dur+0.02);
+
+        osc.connect(g); g.connect(masterGain);
+        osc.start(t0); osc.stop(t0+dur+0.03);
       });
     }
   </script>
