@@ -7,20 +7,22 @@
   <meta name="theme-color" content="#FFFBE2" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
+
   <style>
     :root{--bg:#FFFBE2;--ink:#C21807;--card:#FFFAD1;--shadow:0 8px 24px rgba(0,0,0,.08);--radius:16px}
     *{box-sizing:border-box;margin:0;padding:0}
-    body{background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;line-height:1.6}
-    .hero{position:relative;padding:64px 16px 40px;text-align:center}
+    body{background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;line-height:1.6;text-align:center}
     h1{font-size:clamp(32px,5vw,56px);margin-bottom:6px}
     .subtitle{font-family:"Dancing Script",cursive;font-size:clamp(22px,3.2vw,34px);font-weight:700;margin-bottom:24px}
     #confetti{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+    .hero{position:relative;padding:64px 16px 40px}
     .cta{display:grid;justify-items:center;gap:12px;margin-top:18px}
     .cta small{font-size:13px;opacity:.9;text-transform:uppercase;letter-spacing:.5px}
-    .gift-btn{margin-top:24px;border:0;background:transparent;cursor:pointer;width:160px;height:160px}
-    .gift-btn svg{width:100%;height:100%;transition:transform .25s ease}
-    .gift-btn:hover svg{transform:translateY(-3px)}
-    main{max-width:1000px;margin:0 auto;padding:24px 16px 56px}
+    .gift-btn{border:0;background:transparent;cursor:pointer;width:clamp(140px,22vw,200px);aspect-ratio:1/1;border-radius:12px;transition:transform .25s ease}
+    .gift-btn:hover{transform:translateY(-4px) scale(1.05)}
+    .gift-btn svg{display:none !important}
+    .gift-btn img{display:block;width:100%;height:100%;object-fit:contain;border-radius:12px}
+    main{max-width:1000px;margin:0 auto;padding:24px 16px 56px;text-align:left}
     section{margin:24px 0;background:rgba(255,255,255,.5);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
     h2{text-align:center;margin-bottom:8px}
     .vouchers[hidden]{display:none}
@@ -31,17 +33,11 @@
     .voucher{background:var(--card);border:1px dashed rgba(194,24,7,.55);border-radius:14px;padding:14px;min-height:150px;display:flex;flex-direction:column;gap:10px}
     .voucher-title{font-weight:800;text-transform:uppercase}
     .voucher-body{font-style:italic}
-    .voucher-body::first-letter{text-transform:uppercase}
     .voucher-meta{display:flex;align-items:center;justify-content:space-between;gap:8px}
     .redeemBtn{padding:6px 10px;border-radius:999px;border:1px solid rgba(194,24,7,.35);background:rgba(194,24,7,.08);color:var(--ink);cursor:pointer;font-size:12px}
     .voucher[data-redeemed="true"]{opacity:.88;border-style:solid}
     .date-badge{font-size:11px;padding:4px 8px;border-radius:999px;background:rgba(194,24,7,.08);border:1px solid rgba(194,24,7,.25)}
     @media print{body{background:#fff;color:#000}.hero{display:none}section{box-shadow:none;background:#fff}.redeemBtn{display:none}}
-    #bow{transform-box:fill-box;transform-origin:center}
-    @media (prefers-reduced-motion:no-preference){
-      @keyframes bowBreathe{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
-      #bow{animation:bowBreathe 2600ms ease-in-out infinite}
-    }
   </style>
 </head>
 <body>
@@ -51,57 +47,8 @@
 
     <div class="cta">
       <small>CLICCA PER SPACCHETTARE IL TUO REGALO</small>
-     <button id="openGift" class="gift-btn" aria-controls="vouchers" aria-expanded="false" aria-label="Apri il regalo">
-  <img src="https://w7.pngwing.com/pngs/803/344/png-transparent-gift-white-gift-box-with-red-bow-red-and-white-gift-box-illustration-ribbon-gift-box-sticker-thumbnail.png alt="Pacchetto regalo" style="width:100%;height:100%;object-fit:contain;border-radius:12px;">
-</button>
-        <svg viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <ellipse cx="64" cy="115" rx="38" ry="8" fill="rgba(0,0,0,.10)"/>
-          <rect x="20" y="46" width="88" height="64" rx="8" fill="#C21807"/>
-          <rect x="20" y="46" width="88" height="64" rx="8" fill="url(#g1)" opacity=".15"/>
-          <rect x="16" y="32" width="96" height="26" rx="8" fill="#E64747"/>
-          <rect x="16" y="32" width="96" height="26" rx="8" fill="url(#g2)" opacity=".18"/>
-          <rect x="60" y="32" width="8" height="78" rx="2" fill="#FFD2D2"/>
-          <rect x="16" y="58" width="96" height="8" rx="2" fill="#FFD2D2"/>
-
-          <!-- Fiocco fix: overflow visibile + filtro con bbox ampia -->
-          <g id="bow" transform="translate(64 44)" overflow="visible">
-            <g filter="url(#dropShadowBow)">
-              <path d="M -32,-2 C -52,-20 -28,-30 -14,-16 C -6,-8 -8,6 -20,10 C -27,12 -30,6 -32,-2 Z"
-                    fill="url(#bowGradL)" stroke="#A81808" stroke-width="0.8"/>
-              <path d="M 32,-2 C 52,-20 28,-30 14,-16 C 6,-8 8,6 20,10 C 27,12 30,6 32,-2 Z"
-                    fill="url(#bowGradR)" stroke="#A81808" stroke-width="0.8"/>
-              <ellipse cx="0" cy="6" rx="7.5" ry="6.5" fill="url(#knotGrad)" stroke="#8F1406" stroke-width="1"/>
-              <path d="M -3,11 L -10,26 L -2,22" fill="url(#tailGrad)" stroke="#991406" stroke-width="0.6"/>
-              <path d="M 3,11 L 10,26 L 2,22" fill="url(#tailGrad)" stroke="#991406" stroke-width="0.6"/>
-              <path d="M -26,-8 C -36,-16 -20,-20 -12,-14" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1.2"/>
-              <path d="M 26,-8 C 36,-16 20,-20 12,-14" fill="none" stroke="rgba(255,255,255,.35)" stroke-width="1.2"/>
-            </g>
-          </g>
-
-          <defs>
-            <linearGradient id="g1" x1="0" y1="46" x2="0" y2="110">
-              <stop offset="0" stop-color="#fff" stop-opacity=".6"/><stop offset="1" stop-color="#000" stop-opacity="0"/>
-            </linearGradient>
-            <linearGradient id="g2" x1="16" y1="32" x2="112" y2="58">
-              <stop offset="0" stop-color="#fff" stop-opacity=".5"/><stop offset="1" stop-color="#000" stop-opacity="0"/>
-            </linearGradient>
-            <linearGradient id="bowGradL" x1="-40" y1="-24" x2="0" y2="14" gradientUnits="userSpaceOnUse">
-              <stop offset="0" stop-color="#FFD7D7"/><stop offset=".5" stop-color="#FFC1C1"/><stop offset="1" stop-color="#E88E8E"/>
-            </linearGradient>
-            <linearGradient id="bowGradR" x1="40" y1="-24" x2="0" y2="14" gradientUnits="userSpaceOnUse">
-              <stop offset="0" stop-color="#FFD7D7"/><stop offset=".5" stop-color="#FFC1C1"/><stop offset="1" stop-color="#E88E8E"/>
-            </linearGradient>
-            <radialGradient id="knotGrad" cx="0" cy="6" r="10" gradientUnits="userSpaceOnUse">
-              <stop offset="0" stop-color="#FFE4E4"/><stop offset=".7" stop-color="#FFC5C5"/><stop offset="1" stop-color="#E69292"/>
-            </radialGradient>
-            <linearGradient id="tailGrad" x1="0" y1="10" x2="0" y2="28" gradientUnits="userSpaceOnUse">
-              <stop offset="0" stop-color="#FFD2D2"/><stop offset="1" stop-color="#E88E8E"/>
-            </linearGradient>
-            <filter id="dropShadowBow" x="-128" y="-128" width="384" height="384" filterUnits="userSpaceOnUse">
-              <feDropShadow dx="0" dy="1.2" stdDeviation="1.5" flood-color="rgba(0,0,0,.25)"/>
-            </filter>
-          </defs>
-        </svg>
+      <button id="openGift" class="gift-btn" aria-controls="vouchers" aria-expanded="false" aria-label="Apri il regalo">
+        <img src="https://w7.pngwing.com/pngs/803/344/png-transparent-gift-white-gift-box-with-red-bow-red-and-white-gift-box-illustration-ribbon-gift-box-sticker-thumbnail.png" alt="Pacchetto regalo">
       </button>
     </div>
     <canvas id="confetti"></canvas>
@@ -111,22 +58,22 @@
     <section id="vouchers" class="vouchers" hidden>
       <div class="vouchers-header">
         <h2>LOVE VOUCHERS</h2>
-        <p><strong>Avvertenze:</strong> Questi voucher potrebbero causare dipendenza affettiva; usare con moderazione. Scadenza: illimitata.</p>
+        <p><strong>Avvertenze:</strong> Questi voucher potrebbero causare dipendenza affettiva e dolcezza eccessiva. Scadenza: illimitata.</p>
       </div>
       <div class="grid" id="voucherGrid">
-        <article class="voucher" data-idx="1"><h3 class="voucher-title">GRATTINI</h3><p class="voucher-body">Questo voucher dà diritto ad una sessione della durata di 30 minuti di grattini a scelta.</p><div class="voucher-meta"><button class="redeemBtn">Riscatta</button><div class="meta-right"></div></div></article>
-        <article class="voucher" data-idx="2"><h3 class="voucher-title">MASSAGGIO RILASSANTE</h3><p class="voucher-body">Questo voucher dà diritto ad un massaggio rilassante completo della durata di 60 minuti.</p><div class="voucher-meta"><button class="redeemBtn">Riscatta</button><div class="meta-right"></div></div></article>
-        <article class="voucher" data-idx="3"><h3 class="voucher-title">SERATA FILM</h3><p class="voucher-body">Questo voucher ti dà il diritto di scegliere un film che vuoi tu, con snack che desideri offerti o cena sul divano.</p><div class="voucher-meta"><button class="redeemBtn">Riscatta</button><div class="meta-right"></div></div></article>
-        <article class="voucher" data-idx="4"><h3 class="voucher-title">COMANDI TU</h3><p class="voucher-body">Per una giornata intera si farà tutto ciò che desideri, qualsiasi cosa.</p><div class="voucher-meta"><button class="redeemBtn">Riscatta</button><div class="meta-right"></div></div></article>
-        <article class="voucher" data-idx="5"><h3 class="voucher-title">COLAZIONE A LETTO</h3><p class="voucher-body">La tua colazione a scelta direttamente a letto, utilizzare il voucher con anticipo.</p><div class="voucher-meta"><button class="redeemBtn">Riscatta</button><div class="meta-right"></div></div></article>
-        <article class="voucher" data-idx="6"><h3 class="voucher-title">CHEF PERSONALE</h3><p class="voucher-body">Utilizzando questo voucher, il beneficiario potrà godere di una cena a scelta preparata dal partner che si dovrà occupare di tutto, dalla spesa alla pulizia della cucina.</p><div class="voucher-meta"><button class="redeemBtn">Riscatta</button><div class="meta-right"></div></div></article>
-        <article class="voucher" data-idx="7"><h3 class="voucher-title">FANTASIA PICCANTE</h3><p class="voucher-body">Questo buono dà il diritto alla realizzazione di qualsiasi fantasia da parte del partner.</p><div class="voucher-meta"><button class="redeemBtn">Riscatta</button><div class="meta-right"></div></div></article>
-        <article class="voucher" data-idx="8"><h3 class="voucher-title">BOCCONOTTO NOW</h3><p class="voucher-body">Questo voucher dà il diritto a ricevere nell'immediato un bocconotto.</p><div class="voucher-meta"><button class="redeemBtn">Riscatta</button><div class="meta-right"></div></div></article>
-        <article class="voucher" data-idx="9"><h3 class="voucher-title">GAME NIGHT</h3><p class="voucher-body">Serata game a scelta, che siano giochi da tavola, giochi online o bowling.</p><div class="voucher-meta"><button class="redeemBtn">Riscatta</button><div class="meta-right"></div></div></article>
-        <article class="voucher" data-idx="10"><h3 class="voucher-title">CINEMA</h3><p class="voucher-body">Questo buono dà il diritto di usufruire di una serata cinema con film a scelta, tutto offerto.</p><div class="voucher-meta"><button class="redeemBtn">Riscatta</button><div class="meta-right"></div></div></article>
-        <article class="voucher" data-idx="11"><h3 class="voucher-title">GELATINO</h3><p class="voucher-body">Questo voucher permette di farsi prendere un gelato a scelta in qualsiasi momento.</p><div class="voucher-meta"><button class="redeemBtn">Riscatta</button><div class="meta-right"></div></div></article>
-        <article class="voucher" data-idx="12"><h3 class="voucher-title">BOOK LOVER</h3><p class="voucher-body">Questo voucher dà la possibilità di ricevere un libro a scelta in regalo.</p><div class="voucher-meta"><button class="redeemBtn">Riscatta</button><div class="meta-right"></div></div></article>
-        <article class="voucher" data-idx="13"><h3 class="voucher-title">CIOCCOLATINO</h3><p class="voucher-body">Questo voucher è utilizzabile per farsi prendere un cioccolatino a scelta in qualsiasi momento.</p><div class="voucher-meta"><button class="redeemBtn">Riscatta</button><div class="meta-right"></div></div></article>
+        <article class="voucher" data-idx="1"><h3 class="voucher-title">GRATTINI</h3><p class="voucher-body">Sessione di 30 minuti di grattini a scelta.</p><div class="voucher-meta"><button class="redeemBtn">Riscatta</button><div class="meta-right"></div></div></article>
+        <article class="voucher" data-idx="2"><h3 class="voucher-title">MASSAGGIO RILASSANTE</h3><p class="voucher-body">Massaggio rilassante completo della durata di 60 minuti.</p><div class="voucher-meta"><button class="redeemBtn">Riscatta</button><div class="meta-right"></div></div></article>
+        <article class="voucher" data-idx="3"><h3 class="voucher-title">SERATA FILM</h3><p class="voucher-body">Film a scelta con snack o cena sul divano.</p><div class="voucher-meta"><button class="redeemBtn">Riscatta</button><div class="meta-right"></div></div></article>
+        <article class="voucher" data-idx="4"><h3 class="voucher-title">COMANDI TU</h3><p class="voucher-body">Per una giornata intera si farà tutto ciò che desideri.</p><div class="voucher-meta"><button class="redeemBtn">Riscatta</button><div class="meta-right"></div></div></article>
+        <article class="voucher" data-idx="5"><h3 class="voucher-title">COLAZIONE A LETTO</h3><p class="voucher-body">Colazione a scelta servita a letto (prenotare in anticipo!).</p><div class="voucher-meta"><button class="redeemBtn">Riscatta</button><div class="meta-right"></div></div></article>
+        <article class="voucher" data-idx="6"><h3 class="voucher-title">CHEF PERSONALE</h3><p class="voucher-body">Cena a scelta preparata dal partner, dalla spesa alla pulizia.</p><div class="voucher-meta"><button class="redeemBtn">Riscatta</button><div class="meta-right"></div></div></article>
+        <article class="voucher" data-idx="7"><h3 class="voucher-title">FANTASIA PICCANTE</h3><p class="voucher-body">Realizzazione di una fantasia a scelta del partner.</p><div class="voucher-meta"><button class="redeemBtn">Riscatta</button><div class="meta-right"></div></div></article>
+        <article class="voucher" data-idx="8"><h3 class="voucher-title">BOCCONOTTO NOW</h3><p class="voucher-body">Diritto a ricevere subito un bocconotto.</p><div class="voucher-meta"><button class="redeemBtn">Riscatta</button><div class="meta-right"></div></div></article>
+        <article class="voucher" data-idx="9"><h3 class="voucher-title">GAME NIGHT</h3><p class="voucher-body">Serata di giochi a scelta: da tavolo, online o bowling.</p><div class="voucher-meta"><button class="redeemBtn">Riscatta</button><div class="meta-right"></div></div></article>
+        <article class="voucher" data-idx="10"><h3 class="voucher-title">CINEMA</h3><p class="voucher-body">Serata cinema con film a scelta, tutto offerto.</p><div class="voucher-meta"><button class="redeemBtn">Riscatta</button><div class="meta-right"></div></div></article>
+        <article class="voucher" data-idx="11"><h3 class="voucher-title">GELATINO</h3><p class="voucher-body">Un gelato a scelta in qualsiasi momento.</p><div class="voucher-meta"><button class="redeemBtn">Riscatta</button><div class="meta-right"></div></div></article>
+        <article class="voucher" data-idx="12"><h3 class="voucher-title">BOOK LOVER</h3><p class="voucher-body">Ricevi un libro a scelta in regalo.</p><div class="voucher-meta"><button class="redeemBtn">Riscatta</button><div class="meta-right"></div></div></article>
+        <article class="voucher" data-idx="13"><h3 class="voucher-title">CIOCCOLATINO</h3><p class="voucher-body">Un cioccolatino a scelta in qualsiasi momento.</p><div class="voucher-meta"><button class="redeemBtn">Riscatta</button><div class="meta-right"></div></div></article>
       </div>
     </section>
   </main>
@@ -140,9 +87,9 @@
       sec.scrollIntoView({behavior:"smooth",block:"start"});
       burstConfetti();
     }
+
     document.addEventListener("DOMContentLoaded",()=>{
-      const btn=document.getElementById("openGift");
-      btn.addEventListener("click",openGift);
+      document.getElementById("openGift").addEventListener("click",openGift);
       loadState();
       startConfetti();
     });
@@ -159,7 +106,7 @@
         const meta=v.querySelector(".meta-right");
         if(redeemed){
           v.dataset.redeemed="true";
-          if(btn) btn.textContent="Riscattato";
+          btn.textContent="Riscattato";
           if(date) meta.innerHTML=`<span class="date-badge">Riscattato il: ${date}</span>`;
         }
       });
@@ -170,17 +117,15 @@
       const card=e.target.closest(".voucher");
       const idx=card.dataset.idx;
       const meta=card.querySelector(".meta-right");
-      const already=card.dataset.redeemed==="true";
-      if(!already){
-        let date=prompt("Inserisci la data di riscatto (GG/MM/AAAA):", todayIT());
-        if(!date) return;
-        if(!isValidITDate(date)){ alert("Formato non valido. Usa GG/MM/AAAA."); return; }
-        card.dataset.redeemed="true";
-        e.target.textContent="Riscattato";
-        localStorage.setItem(`voucher_${idx}_redeemed`,"1");
-        localStorage.setItem(`voucher_${idx}_date`,date);
-        meta.innerHTML=`<span class="date-badge">Riscattato il: ${date}</span>`;
-      }
+      if(card.dataset.redeemed==="true") return;
+      let date=prompt("Inserisci la data di riscatto (GG/MM/AAAA):", todayIT());
+      if(!date) return;
+      if(!isValidITDate(date)){ alert("Formato non valido. Usa GG/MM/AAAA."); return; }
+      card.dataset.redeemed="true";
+      e.target.textContent="Riscattato";
+      localStorage.setItem(`voucher_${idx}_redeemed`,"1");
+      localStorage.setItem(`voucher_${idx}_date`,date);
+      meta.innerHTML=`<span class="date-badge">Riscattato il: ${date}</span>`;
     });
 
     let confettiCanvas, ctx, confettiPieces=[];
@@ -189,13 +134,13 @@
       if(!confettiCanvas) return;
       ctx=confettiCanvas.getContext("2d");
       resizeConfetti(); window.addEventListener("resize", resizeConfetti);
-      confettiPieces = Array.from({length:100}, ()=>spawnPiece(true));
+      confettiPieces=Array.from({length:100},()=>spawnPiece(true));
       animateConfetti();
     }
     function resizeConfetti(){confettiCanvas.width=confettiCanvas.offsetWidth;confettiCanvas.height=confettiCanvas.offsetHeight}
     function spawnPiece(topRandom=false){
       const w=confettiCanvas.width,h=confettiCanvas.height;
-      return {x:Math.random()*w,y:topRandom?Math.random()*-h:-10,r:4+Math.random()*6,d:1+Math.random()*2,t:Math.random()*Math.PI};
+      return{x:Math.random()*w,y:topRandom?Math.random()*-h:-10,r:4+Math.random()*6,d:1+Math.random()*2,t:Math.random()*Math.PI};
     }
     function animateConfetti(){
       ctx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);
@@ -204,14 +149,14 @@
         ctx.fillStyle=Math.random()>.5?"#C21807":"#E64747";
         ctx.fillRect(-p.r/2,-p.r/2,p.r,p.r*.6);
         ctx.restore();
-        p.y+=p.d; p.x+=Math.sin(p.y/25)*.8; p.t+=.02;
+        p.y+=p.d;p.x+=Math.sin(p.y/25)*.8;p.t+=.02;
         if(p.y>confettiCanvas.height+20){p.y=-10;p.x=Math.random()*confettiCanvas.width;}
       }
       requestAnimationFrame(animateConfetti);
     }
     function burstConfetti(){
-      if(!confettiCanvas) return;
-      for(let i=0;i<60;i++){ confettiPieces.push(spawnPiece(false)); }
+      if(!confettiCanvas)return;
+      for(let i=0;i<60;i++) confettiPieces.push(spawnPiece(false));
       if(confettiPieces.length>240) confettiPieces=confettiPieces.slice(-240);
     }
   </script>
