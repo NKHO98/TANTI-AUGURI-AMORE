@@ -7,26 +7,25 @@
   <meta name="theme-color" content="#FFFBE2" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
-
   <style>
     :root{--bg:#FFFBE2;--ink:#C21807;--card:#FFFAD1;--shadow:0 8px 24px rgba(0,0,0,.08);--radius:16px}
     *{box-sizing:border-box;margin:0;padding:0}
-    body{background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;line-height:1.6;text-align:center}
+    body{background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;line-height:1.6}
+    .hero{position:relative;padding:64px 16px 40px;text-align:center}
     h1{font-size:clamp(32px,5vw,56px);margin-bottom:6px}
     .subtitle{font-family:"Dancing Script",cursive;font-size:clamp(22px,3.2vw,34px);font-weight:700;margin-bottom:24px}
     #confetti{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
-    .hero{position:relative;padding:64px 16px 40px}
     .cta{display:grid;justify-items:center;gap:12px;margin-top:18px}
     .cta small{font-size:13px;opacity:.9;text-transform:uppercase;letter-spacing:.5px}
+    /* Bottone immagine (niente SVG) */
     .gift-btn{
       border:0;background:transparent;cursor:pointer;
       width:clamp(140px,22vw,200px);aspect-ratio:1/1;border-radius:12px;
       transition:transform .25s ease
     }
     .gift-btn:hover{transform:translateY(-4px) scale(1.05)}
-    .gift-btn svg{display:none !important}
     .gift-btn img{display:block;width:100%;height:100%;object-fit:contain;border-radius:12px}
-    main{max-width:1000px;margin:0 auto;padding:24px 16px 56px;text-align:left}
+    main{max-width:1000px;margin:0 auto;padding:24px 16px 56px}
     section{margin:24px 0;background:rgba(255,255,255,.5);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow)}
     h2{text-align:center;margin-bottom:8px}
     .vouchers[hidden]{display:none}
@@ -51,10 +50,18 @@
 
     <div class="cta">
       <small>CLICCA PER SPACCHETTARE IL TUO REGALO</small>
+
+      <!-- SOLO IMMAGINE (trasparente) -->
       <button id="openGift" class="gift-btn" aria-controls="vouchers" aria-expanded="false" aria-label="Apri il regalo">
-        <img src="https://www.freeiconspng.com/uploads/gift-red-box-png-17.png?v=2" alt="Pacchetto regalo">
+        <img
+          src="https://pngimg.com/uploads/gift/gift_PNG100465.png?v=5"
+          alt="Pacchetto regalo"
+          loading="eager" decoding="async"
+          onerror="this.onerror=null;this.src='https://pngimg.com/uploads/gift/gift_PNG100448.png?v=5';"
+        >
       </button>
     </div>
+
     <canvas id="confetti"></canvas>
   </header>
 
@@ -64,6 +71,7 @@
         <h2>LOVE VOUCHERS</h2>
         <p><strong>Avvertenze:</strong> Questi voucher potrebbero causare dipendenza affettiva e dolcezza eccessiva. Scadenza: illimitata.</p>
       </div>
+
       <div class="grid" id="voucherGrid">
         <article class="voucher" data-idx="1"><h3 class="voucher-title">GRATTINI</h3><p class="voucher-body">Sessione di 30 minuti di grattini a scelta.</p><div class="voucher-meta"><button class="redeemBtn">Riscatta</button><div class="meta-right"></div></div></article>
         <article class="voucher" data-idx="2"><h3 class="voucher-title">MASSAGGIO RILASSANTE</h3><p class="voucher-body">Massaggio rilassante completo della durata di 60 minuti.</p><div class="voucher-meta"><button class="redeemBtn">Riscatta</button><div class="meta-right"></div></div></article>
@@ -83,6 +91,7 @@
   </main>
 
   <script>
+    /* Apertura regalo */
     function openGift(){
       const sec=document.getElementById("vouchers");
       sec.hidden=false; void sec.offsetHeight;
@@ -91,16 +100,22 @@
       sec.scrollIntoView({behavior:"smooth",block:"start"});
       burstConfetti();
     }
-
     document.addEventListener("DOMContentLoaded",()=>{
       document.getElementById("openGift").addEventListener("click",openGift);
       loadState();
       startConfetti();
     });
 
+    /* Utilità data */
     function todayIT(){const d=new Date();return `${String(d.getDate()).padStart(2,"0")}/${String(d.getMonth()+1).padStart(2,"0")}/${d.getFullYear()}`}
-    function isValidITDate(str){if(!/^\d{2}\/\d{2}\/\d{4}$/.test(str))return false;const[dd,mm,yyyy]=str.split("/").map(n=>parseInt(n,10));const dt=new Date(yyyy,mm-1,dd);return dt.getFullYear()===yyyy&&dt.getMonth()===mm-1&&dt.getDate()===dd}
+    function isValidITDate(str){
+      if(!/^\d{2}\/\d{2}\/\d{4}$/.test(str))return false;
+      const[dd,mm,yyyy]=str.split("/").map(n=>parseInt(n,10));
+      const dt=new Date(yyyy,mm-1,dd);
+      return dt.getFullYear()===yyyy&&dt.getMonth()===mm-1&&dt.getDate()===dd;
+    }
 
+    /* Stato vouchers */
     function loadState(){
       document.querySelectorAll(".voucher").forEach(v=>{
         const idx=v.dataset.idx;
@@ -110,7 +125,7 @@
         const meta=v.querySelector(".meta-right");
         if(redeemed){
           v.dataset.redeemed="true";
-          btn.textContent="Riscattato";
+          if(btn) btn.textContent="Riscattato";
           if(date) meta.innerHTML=`<span class="date-badge">Riscattato il: ${date}</span>`;
         }
       });
@@ -132,6 +147,7 @@
       meta.innerHTML=`<span class="date-badge">Riscattato il: ${date}</span>`;
     });
 
+    /* Confetti */
     let confettiCanvas, ctx, confettiPieces=[];
     function startConfetti(){
       confettiCanvas=document.getElementById("confetti");
