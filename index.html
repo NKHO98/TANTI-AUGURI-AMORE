@@ -17,6 +17,7 @@
     #confetti{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
     .cta{display:grid;justify-items:center;gap:12px;margin-top:18px}
     .cta small{font-size:13px;opacity:.9;text-transform:uppercase;letter-spacing:.5px}
+    /* Bottone immagine (niente SVG) */
     .gift-btn{
       border:0;background:transparent;cursor:pointer;
       width:clamp(140px,22vw,200px);aspect-ratio:1/1;border-radius:12px;
@@ -49,12 +50,18 @@
 
     <div class="cta">
       <small>CLICCA PER SPACCHETTARE IL TUO REGALO</small>
+
+      <!-- SOLO IMMAGINE (trasparente) -->
       <button id="openGift" class="gift-btn" aria-controls="vouchers" aria-expanded="false" aria-label="Apri il regalo">
-        <img src="https://pngimg.com/uploads/gift/gift_PNG100465.png?v=9" alt="Pacchetto regalo">
+        <img
+          src="https://pngimg.com/uploads/gift/gift_PNG100465.png?v=5"
+          alt="Pacchetto regalo"
+          loading="eager" decoding="async"
+          onerror="this.onerror=null;this.src='https://pngimg.com/uploads/gift/gift_PNG100448.png?v=5';"
+        >
       </button>
-      <!-- Tip silenzioso per iPhone: togli la modalità silenziosa -->
-      <small style="font-size:12px;opacity:.7">(Se non senti la musichetta su iPhone, disattiva il silenzioso 🔔)</small>
     </div>
+
     <canvas id="confetti"></canvas>
   </header>
 
@@ -64,6 +71,7 @@
         <h2>LOVE VOUCHERS</h2>
         <p><strong>Avvertenze:</strong> Questi voucher potrebbero causare dipendenza affettiva e dolcezza eccessiva. Scadenza: illimitata.</p>
       </div>
+
       <div class="grid" id="voucherGrid">
         <article class="voucher" data-idx="1"><h3 class="voucher-title">GRATTINI</h3><p class="voucher-body">Sessione di 30 minuti di grattini a scelta.</p><div class="voucher-meta"><button class="redeemBtn">Riscatta</button><div class="meta-right"></div></div></article>
         <article class="voucher" data-idx="2"><h3 class="voucher-title">MASSAGGIO RILASSANTE</h3><p class="voucher-body">Massaggio rilassante completo della durata di 60 minuti.</p><div class="voucher-meta"><button class="redeemBtn">Riscatta</button><div class="meta-right"></div></div></article>
@@ -83,7 +91,7 @@
   </main>
 
   <script>
-    /* ===== Apertura regalo ===== */
+    /* Apertura regalo */
     function openGift(){
       const sec=document.getElementById("vouchers");
       sec.hidden=false; void sec.offsetHeight;
@@ -91,16 +99,14 @@
       document.getElementById("openGift").setAttribute("aria-expanded","true");
       sec.scrollIntoView({behavior:"smooth",block:"start"});
       burstConfetti();
-      playHappyBirthday();   // melodia "Happy Birthday"
     }
-
     document.addEventListener("DOMContentLoaded",()=>{
       document.getElementById("openGift").addEventListener("click",openGift);
       loadState();
       startConfetti();
     });
 
-    /* ===== Utilità data ===== */
+    /* Utilità data */
     function todayIT(){const d=new Date();return `${String(d.getDate()).padStart(2,"0")}/${String(d.getMonth()+1).padStart(2,"0")}/${d.getFullYear()}`}
     function isValidITDate(str){
       if(!/^\d{2}\/\d{2}\/\d{4}$/.test(str))return false;
@@ -109,7 +115,7 @@
       return dt.getFullYear()===yyyy&&dt.getMonth()===mm-1&&dt.getDate()===dd;
     }
 
-    /* ===== Stato vouchers ===== */
+    /* Stato vouchers */
     function loadState(){
       document.querySelectorAll(".voucher").forEach(v=>{
         const idx=v.dataset.idx;
@@ -141,7 +147,7 @@
       meta.innerHTML=`<span class="date-badge">Riscattato il: ${date}</span>`;
     });
 
-    /* ===== Confetti ===== */
+    /* Confetti */
     let confettiCanvas, ctx, confettiPieces=[];
     function startConfetti(){
       confettiCanvas=document.getElementById("confetti");
@@ -172,90 +178,6 @@
       if(!confettiCanvas)return;
       for(let i=0;i<60;i++) confettiPieces.push(spawnPiece(false));
       if(confettiPieces.length>240) confettiPieces=confettiPieces.slice(-240);
-    }
-
-    /* ===== AUDIO: sblocco iPhone + Happy Birthday ===== */
-    let audioCtx=null, masterGain=null;
-
-    // Sblocca audio al primo gesto (necessario su iOS)
-    function unlockAudioOnce(){
-      initAudio();
-      const t=audioCtx.currentTime;
-      const osc=audioCtx.createOscillator();
-      const g=audioCtx.createGain();
-      osc.type="sine"; osc.frequency.value=880;
-      g.gain.setValueAtTime(0.0001,t);
-      g.gain.exponentialRampToValueAtTime(0.35,t+0.02);
-      g.gain.exponentialRampToValueAtTime(0.0001,t+0.12);
-      osc.connect(g); g.connect(masterGain);
-      osc.start(t); osc.stop(t+0.15);
-      document.removeEventListener("pointerdown", unlockAudioOnce);
-      document.removeEventListener("keydown", unlockAudioOnce);
-      document.removeEventListener("touchstart", unlockAudioOnce);
-    }
-    document.addEventListener("pointerdown", unlockAudioOnce, {once:true});
-    document.addEventListener("keydown", unlockAudioOnce, {once:true});
-    document.addEventListener("touchstart", unlockAudioOnce, {once:true, passive:true});
-
-    function initAudio(){
-      if(!audioCtx){
-        const AC=window.AudioContext||window.webkitAudioContext;
-        if(!AC) return;
-        audioCtx=new AC();
-        masterGain=audioCtx.createGain();
-        masterGain.gain.value=0.22;   // volume generale
-        masterGain.connect(audioCtx.destination);
-      }
-      if(audioCtx.state==="suspended") audioCtx.resume();
-    }
-
-    // Frequenze di riferimento
-    const FREQ = {
-      C4:261.63, Db4:277.18, D4:293.66, Eb4:311.13, E4:329.63, F4:349.23, Gb4:369.99, G4:392.00, Ab4:415.30, A4:440.00, Bb4:466.16, B4:493.88,
-      C5:523.25, Db5:554.37, D5:587.33, Eb5:622.25, E5:659.25, F5:698.46, Gb5:739.99, G5:783.99, Ab5:830.61, A5:880.00, Bb5:932.33, B5:987.77
-    };
-
-    // Sequenza "Happy Birthday" (in G maggiore): G4 G4 A4 G4 C5 B4 | G4 G4 A4 G4 D5 C5 | G4 G4 G5 E5 C5 B4 A4 | F5 F5 E5 C5 D5 C5
-    const HB_SEQ = [
-      {n:"G4",l:1}, {n:"G4",l:1}, {n:"A4",l:2}, {n:"G4",l:2}, {n:"C5",l:2}, {n:"B4",l:4},
-      {n:"G4",l:1}, {n:"G4",l:1}, {n:"A4",l:2}, {n:"G4",l:2}, {n:"D5",l:2}, {n:"C5",l:4},
-      {n:"G4",l:1}, {n:"G4",l:1}, {n:"G5",l:2}, {n:"E5",l:2}, {n:"C5",l:2}, {n:"B4",l:2}, {n:"A4",l:4},
-      {n:"F5",l:1}, {n:"F5",l:1}, {n:"E5",l:2}, {n:"C5",l:2}, {n:"D5",l:2}, {n:"C5",l:4}
-    ];
-    // l = multiplo della durata base; aggiungi piccole pause automatiche
-
-    function playHappyBirthday(){
-      initAudio();
-      if(!audioCtx) return;
-      const baseDur = 0.20;     // durata base di una "unità"
-      const gap = 0.03;         // pausa tra note
-      const now = audioCtx.currentTime;
-
-      HB_SEQ.reduce((t, step)=>{
-        const freq = FREQ[step.n] || null;
-        const dur = baseDur * step.l;
-        if(freq){
-          // timbro "carillon": due oscillatori morbidi (sine + triangle molto bassa) con inviluppo
-          const o1 = audioCtx.createOscillator();
-          const o2 = audioCtx.createOscillator();
-          const g  = audioCtx.createGain();
-
-          o1.type="sine";      o1.frequency.value=freq;
-          o2.type="triangle";  o2.frequency.value=freq;  // un filo di brillantezza
-          const start=t, end=t+dur;
-
-          g.gain.setValueAtTime(0.0001,start);
-          g.gain.exponentialRampToValueAtTime(0.9,start+0.03);
-          g.gain.exponentialRampToValueAtTime(0.0001,end);
-
-          const mix = audioCtx.createGain(); mix.gain.value = 0.85; // mix locale
-          o1.connect(mix); o2.connect(mix); mix.connect(g); g.connect(masterGain);
-
-          o1.start(start); o2.start(start);
-          o1.stop(end+0.02); o2.stop(end+0.02);
-        }
-        return t + dur + gap;
-      }, now);
     }
   </script>
 </body>
